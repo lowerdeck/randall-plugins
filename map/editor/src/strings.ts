@@ -1,0 +1,17 @@
+export const strings = {
+  searchPlaceholder: "Search for a place or address…",
+  style:             "Style",
+  markers:           "Markers",
+  addMarker:         "Add marker",
+  removeMarker:      "Remove marker",
+  centerOnMarker:    "Center on marker",
+  viewLocked:        "The map view (center, zoom or bounds) is bound to data, and can't be changed here.",
+  markersLocked:     "The markers are bound to data, and can't be changed here.",
+  locationLocked:    "The location of this marker is bound to data, and can't be moved here.",
+  markerLocked:      "Some properties of this marker are bound to data, and can't be changed here.",
+  styleLocked:       "The map style is bound to data, and can't be changed here.",
+  noIcon:            "none",
+  markerIcon:        "Icon",
+  markerColor:       "Color",
+  markerSize:        "Size",
+}
