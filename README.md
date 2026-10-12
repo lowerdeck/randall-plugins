@@ -12,4 +12,7 @@ Each widget has the same three parts, e.g. `map/core`, `map/editor` and `map/ser
 The apps have this repo as a submodule at `vendor/widgets`, with `vendor/widgets/*/*` in their workspaces, and list the
 widgets they offer in a single registry file.
 
+To sync changes between the apps, run `just widgets` in either (or `just widgets "<message>"` to commit local
+changes first). It pulls, pushes, builds and stages the new commit in the app.
+
 Tests run with the vitest of an app, e.g. from `frontend/vendor/widgets`: `../../app/node_modules/.bin/vitest run`.
