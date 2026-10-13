@@ -1,5 +1,5 @@
 import { WidgetDrawContext } from '@randall/plugin-sdk'
-import { GeoPoint } from 'templates'
+import { GeoPoint } from './geo'
 import { MapProps } from './MapProps'
 import { drawMarker } from './marker'
 import { MapResources } from './prepareMap'
@@ -13,8 +13,8 @@ export function drawMap(ctx: CanvasRenderingContext2D, props: MapProps, {size, r
     // Snap to whole pixels so that neighbouring tiles meet without seams.
     const left = Math.round(rect.left)
     const top = Math.round(rect.top)
-    const right = Math.round(rect.right)
-    const bottom = Math.round(rect.bottom)
+    const right = Math.round(rect.left + rect.width)
+    const bottom = Math.round(rect.top + rect.height)
     ctx.drawImage(image, left, top, right - left, bottom - top)
   }
 

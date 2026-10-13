@@ -1,5 +1,12 @@
+import { resolveParams } from './resolveParams'
 import { Widget } from './Widget'
+import { WidgetParams, WidgetProps } from './WidgetParam'
 
-export function defineWidget<P, R = undefined>(widget: Widget<P, R>): Widget<P, R> {
-  return widget
+export function defineWidget<Ps extends WidgetParams, R = undefined>(
+  widget: Omit<Widget<WidgetProps<Ps>, R>, 'params' | 'resolveProps'> & {params: Ps},
+): Widget<WidgetProps<Ps>, R> {
+  return {
+    ...widget,
+    resolveProps: raw => resolveParams(widget.params, raw),
+  }
 }

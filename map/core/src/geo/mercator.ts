@@ -1,4 +1,4 @@
-import { GeoPoint } from 'templates'
+import { GeoPoint } from './GeoPoint'
 
 // Web-mercator projection into normalized world coordinates: [0, 1] on both axes, origin top-left.
 export function project(point: GeoPoint): [number, number] {

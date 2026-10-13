@@ -1,4 +1,6 @@
-import { GeoBounds, GeoPoint, Size } from 'templates'
+import { WidgetSize } from '@randall/plugin-sdk'
+import { GeoBounds } from './GeoBounds'
+import { GeoPoint } from './GeoPoint'
 import { project, unproject, worldSize } from './mercator'
 
 // A view on the map: what is in the center and how far zoomed in. Combined with a pixel size, it fully determines
@@ -10,7 +12,7 @@ export class MapViewport {
     public readonly zoom: number,
   ) {}
 
-  public static fitBounds(bounds: GeoBounds, size: Size, padding: number = 0): MapViewport {
+  public static fitBounds(bounds: GeoBounds, size: WidgetSize, padding: number = 0): MapViewport {
     const [west, north] = project({lat: bounds.north, lng: bounds.west})
     let [east, south] = project({lat: bounds.south, lng: bounds.east})
 
@@ -28,7 +30,7 @@ export class MapViewport {
   }
 
   // The pixel position of a geo point, relative to the top-left of a map of the given size.
-  public pointToPixel(point: GeoPoint, size: Size): [number, number] {
+  public pointToPixel(point: GeoPoint, size: WidgetSize): [number, number] {
     const [cx, cy] = project(this.center)
     let [px, py] = project(point)
 

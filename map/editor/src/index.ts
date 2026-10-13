@@ -1,2 +1,2 @@
-export * from './MapEditor'
-export { MapEditor as default } from './MapEditor'
+export * from './mapEditor'
+export { mapEditor as default } from './mapEditor'

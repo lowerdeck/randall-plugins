@@ -1,6 +1,6 @@
-import { WidgetDefinition } from 'templates'
 import { WidgetDrawContext } from './WidgetDrawContext'
 import { WidgetHost } from './WidgetHost'
+import { WidgetParams } from './WidgetParam'
 import { WidgetSettings } from './WidgetSettings'
 import { WidgetSize } from './WidgetSize'
 
@@ -9,18 +9,14 @@ import { WidgetSize } from './WidgetSize'
  * template editor's preview and in the backend when rendering.
  */
 export interface Widget<P = any, R = any> {
-  definition: WidgetDefinition
+  name:   string
+  label:  string
+  params: WidgetParams
 
   /** Organisation-wide settings, like provider credentials. */
   settings?: WidgetSettings
 
-  /**
-   * How params are edited, where their type isn't enough: `dialog` params are left to the widget's own editor, and
-   * `color` params are text params holding a color.
-   */
-  paramHints?: Record<string, WidgetParamHint>
-
-  /** The props to draw with, given the (evaluated) props of the spec, which may be incomplete. */
+  /** The props to draw with, given the (evaluated) props of the spec, which may be incomplete. See `defineWidget`. */
   resolveProps(raw: Record<string, unknown>): P
 
   /** Loads what drawing needs, like images. Called again whenever the props or the size change. */
@@ -29,8 +25,6 @@ export interface Widget<P = any, R = any> {
   /** Draws the widget with its top left at the origin. Drawing is clipped to its size. */
   draw(ctx: CanvasRenderingContext2D, props: P, context: WidgetDrawContext<R>): void
 }
-
-export type WidgetParamHint = 'dialog' | 'color'
 
 export interface WidgetPrepareContext {
   size: WidgetSize

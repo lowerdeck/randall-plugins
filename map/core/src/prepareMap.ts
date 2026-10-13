@@ -1,4 +1,4 @@
-import { Rect } from 'templates'
+import { WidgetRect } from '@randall/plugin-sdk'
 import { WidgetPrepareContext } from '@randall/plugin-sdk'
 import { MapViewport, visibleTiles } from './geo'
 import { MapProps } from './MapProps'
@@ -29,6 +29,6 @@ export interface MapResources {
 }
 
 export interface LoadedTile {
-  rect:  Rect
+  rect:  WidgetRect
   image: CanvasImageSource
 }

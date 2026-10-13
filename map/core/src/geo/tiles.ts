@@ -1,9 +1,9 @@
-import { Rect, Size } from 'templates'
+import { WidgetRect, WidgetSize } from '@randall/plugin-sdk'
 import { MapViewport } from './MapViewport'
 import { project, TILE_SIZE } from './mercator'
 
 // Lists the raster tiles needed to cover a map of the given size, with their rects relative to the map's top-left.
-export function visibleTiles(viewport: MapViewport, size: Size, maxTileZoom: number = MAX_TILE_ZOOM): PlacedTile[] {
+export function visibleTiles(viewport: MapViewport, size: WidgetSize, maxTileZoom: number = MAX_TILE_ZOOM): PlacedTile[] {
   const z = tileZoom(viewport.zoom, maxTileZoom)
   const count = 2 ** z
   const tileSize = TILE_SIZE * 2 ** (viewport.zoom - z)
@@ -19,12 +19,12 @@ export function visibleTiles(viewport: MapViewport, size: Size, maxTileZoom: num
     for (let tx = Math.floor(left); tx <= Math.ceil(right) - 1; tx++) {
       tiles.push({
         tile: {z, x: ((tx % count) + count) % count, y: ty},
-        rect: new Rect(
-          size.width / 2 + (tx - cx) * tileSize,
-          size.height / 2 + (ty - cy) * tileSize,
-          tileSize,
-          tileSize,
-        ),
+        rect: {
+          left:   size.width / 2 + (tx - cx) * tileSize,
+          top:    size.height / 2 + (ty - cy) * tileSize,
+          width:  tileSize,
+          height: tileSize,
+        },
       })
     }
   }
@@ -51,7 +51,7 @@ export interface TileCoord {
 
 export interface PlacedTile {
   tile: TileCoord
-  rect: Rect
+  rect: WidgetRect
 }
 
 export const MAX_TILE_ZOOM = 20

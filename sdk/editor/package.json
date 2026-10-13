@@ -19,11 +19,7 @@
     "check": "tsc -p . --noEmit"
   },
   "dependencies": {
-    "@randall/plugin-sdk": "workspace:*",
-    "templates": "workspace:*"
-  },
-  "peerDependencies": {
-    "react": ">=19"
+    "@randall/plugin-sdk": "workspace:*"
   },
   "devDependencies": {
     "rimraf": "^6.0.1",

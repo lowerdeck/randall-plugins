@@ -12,9 +12,6 @@ export function createPinElement(options: PinElementOptions): HTMLElement {
     height:  `${height}`,
   })
   svg.style.overflow = 'visible'
-  svg.style.filter = selected
-    ? `drop-shadow(0 0 2px ${selectionColor}) drop-shadow(0 0 2px ${selectionColor})`
-    : `drop-shadow(0 ${height * 0.04}px ${height * 0.05}px rgba(0, 0, 0, 0.31))`
 
   svg.appendChild(svgElement('path', {d: markerPath, fill: color}))
   svg.appendChild(renderHead(icon))
@@ -23,8 +20,18 @@ export function createPinElement(options: PinElementOptions): HTMLElement {
   element.appendChild(svg)
   element.style.lineHeight = '0'
   element.style.cursor = 'pointer'
-  element.style.zIndex = selected ? '1' : '0'
+  setPinSelected(element, height, selected)
   return element
+}
+
+export function setPinSelected(element: HTMLElement, height: number, selected: boolean) {
+  const svg = element.firstElementChild as SVGElement | null
+  if (svg != null) {
+    svg.style.filter = selected
+      ? `drop-shadow(0 0 2px ${selectionColor}) drop-shadow(0 0 2px ${selectionColor})`
+      : `drop-shadow(0 ${height * 0.04}px ${height * 0.05}px rgba(0, 0, 0, 0.31))`
+  }
+  element.style.zIndex = selected ? '1' : '0'
 }
 
 export interface PinElementOptions {

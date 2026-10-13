@@ -20,7 +20,7 @@
   },
   "dependencies": {
     "@randall/plugin-sdk": "workspace:*",
-    "templates": "workspace:*"
+    "zod": "^4.1.5"
   },
   "devDependencies": {
     "rimraf": "^6.0.1",
