@@ -1,7 +1,7 @@
 import { Box, IconButton } from '@mui/joy'
 import { useCallback } from 'react'
 import { memo } from 'react'
-import { shapeNames } from '@randall-widgets/map'
+import { shapeNames } from '@randall-plugins/map'
 import { sx$ } from './sx'
 import { MarkerGlyph } from './MarkerGlyph'
 

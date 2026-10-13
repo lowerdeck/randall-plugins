@@ -1,4 +1,4 @@
-import { defineWidget } from '@randall/widget-sdk'
+import { defineWidget } from '@randall/plugin-sdk'
 import { mapDefinition } from './definition'
 import { drawMap } from './drawMap'
 import { MapProps } from './MapProps'

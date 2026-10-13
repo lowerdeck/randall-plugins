@@ -1,5 +1,5 @@
 {
-  "name": "@randall-widgets/map",
+  "name": "@randall-plugins/map",
   "version": "0.1.0",
   "private": true,
   "license": "UNLICENSED",
@@ -19,7 +19,7 @@
     "check": "tsc -p . --noEmit"
   },
   "dependencies": {
-    "@randall/widget-sdk": "workspace:*",
+    "@randall/plugin-sdk": "workspace:*",
     "templates": "workspace:*"
   },
   "devDependencies": {

@@ -1,7 +1,7 @@
 import { Autocomplete, CircularProgress } from '@mui/joy'
 import { SyntheticEvent, useCallback } from 'react'
 import { observer } from 'mobx-react'
-import { useWidgetUI } from '@randall/widget-sdk-editor'
+import { useWidgetUI } from '@randall/plugin-sdk-editor'
 import { strings } from './strings'
 import { sx$ } from './sx'
 import { GeocodeResult } from './GeocodeResult'

@@ -1,4 +1,4 @@
-import { WidgetEditorProps } from '@randall/widget-sdk-editor'
+import { WidgetEditorProps } from '@randall/plugin-sdk-editor'
 import 'maplibre-gl/dist/maplibre-gl.css'
 import { comparer, reaction } from 'mobx'
 import { observer } from 'mobx-react'

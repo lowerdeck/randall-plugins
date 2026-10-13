@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { WidgetSize } from '@randall/widget-sdk'
+import { WidgetSize } from '@randall/plugin-sdk'
 
 // The largest size with the given aspect ratio that fits in the element.
 export function useFittedSize(aspect: WidgetSize): [(element: HTMLElement | null) => void, WidgetSize | null] {

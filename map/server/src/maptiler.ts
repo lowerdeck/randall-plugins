@@ -1,5 +1,5 @@
-import { WidgetRequestError, WidgetSettingsError } from '@randall/widget-sdk-server'
-import { MapStyle, mapStyle, mapStyles, TileCoord, tileURL } from '@randall-widgets/map'
+import { WidgetRequestError, WidgetSettingsError } from '@randall/plugin-sdk-server'
+import { MapStyle, mapStyle, mapStyles, TileCoord, tileURL } from '@randall-plugins/map'
 import { GeocodingResult, parseGeocodingResults } from './geocodingResult'
 
 /**

@@ -1,4 +1,4 @@
-import { WidgetSize } from '@randall/widget-sdk'
+import { WidgetSize } from '@randall/plugin-sdk'
 import { WidgetEditorHost } from './WidgetEditorHost'
 
 /**

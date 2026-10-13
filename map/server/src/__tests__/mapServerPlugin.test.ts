@@ -1,4 +1,4 @@
-import { WidgetRequestError, WidgetServerContext } from '@randall/widget-sdk-server'
+import { WidgetRequestError, WidgetServerContext } from '@randall/plugin-sdk-server'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { mapServerPlugin } from '../mapServerPlugin'
 import { MapSettings } from '../settings'

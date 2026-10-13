@@ -1,4 +1,4 @@
-import { Widget } from '@randall/widget-sdk'
+import { Widget } from '@randall/plugin-sdk'
 import { WidgetServerContext } from './WidgetServerContext'
 import { WidgetSettingsHandler } from './WidgetSettingsHandler'
 

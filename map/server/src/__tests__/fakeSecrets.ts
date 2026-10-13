@@ -1,4 +1,4 @@
-import { WidgetSecrets } from '@randall/widget-sdk-server'
+import { WidgetSecrets } from '@randall/plugin-sdk-server'
 
 export const fakeSecrets: WidgetSecrets = {
   encrypt:  value => `enc:${value}`,

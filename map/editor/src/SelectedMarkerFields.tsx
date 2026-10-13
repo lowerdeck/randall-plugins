@@ -1,6 +1,6 @@
 import { useCallback } from 'react'
-import { MapMarker, ShapeName } from '@randall-widgets/map'
-import { useWidgetUI } from '@randall/widget-sdk-editor'
+import { MapMarker, ShapeName } from '@randall-plugins/map'
+import { useWidgetUI } from '@randall/plugin-sdk-editor'
 import { HStack, VStack } from './layout'
 import { observer } from 'mobx-react'
 import { strings } from './strings'

@@ -1,5 +1,5 @@
 {
-  "name": "@randall/widget-sdk",
+  "name": "@randall/plugin-sdk",
   "version": "0.1.0",
   "private": true,
   "license": "UNLICENSED",

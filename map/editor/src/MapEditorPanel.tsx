@@ -1,7 +1,7 @@
 import { Divider } from '@mui/joy'
 import { useCallback } from 'react'
 import { observer } from 'mobx-react'
-import { useWidgetUI } from '@randall/widget-sdk-editor'
+import { useWidgetUI } from '@randall/plugin-sdk-editor'
 import { VStack } from './layout'
 import { strings } from './strings'
 import { sx$ } from './sx'

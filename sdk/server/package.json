@@ -1,5 +1,5 @@
 {
-  "name": "@randall/widget-sdk-server",
+  "name": "@randall/plugin-sdk-server",
   "version": "0.1.0",
   "private": true,
   "license": "UNLICENSED",
@@ -19,7 +19,7 @@
     "check": "tsc -p . --noEmit"
   },
   "dependencies": {
-    "@randall/widget-sdk": "workspace:*"
+    "@randall/plugin-sdk": "workspace:*"
   },
   "devDependencies": {
     "rimraf": "^6.0.1",

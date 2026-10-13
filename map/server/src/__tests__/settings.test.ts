@@ -1,4 +1,4 @@
-import { WidgetSettingsError } from '@randall/widget-sdk-server'
+import { WidgetSettingsError } from '@randall/plugin-sdk-server'
 import { describe, expect, it } from 'vitest'
 import { MapSettings, mapSettingsHandler, maptilerAPIKey } from '../settings'
 import { fakeSecrets } from './fakeSecrets'

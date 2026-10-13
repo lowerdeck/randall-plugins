@@ -1,5 +1,5 @@
 {
-  "name": "@randall-widgets/map-editor",
+  "name": "@randall-plugins/map-editor",
   "version": "0.1.0",
   "private": true,
   "license": "UNLICENSED",
@@ -19,9 +19,9 @@
     "check": "tsc -p . --noEmit"
   },
   "dependencies": {
-    "@randall-widgets/map": "workspace:*",
-    "@randall/widget-sdk": "workspace:*",
-    "@randall/widget-sdk-editor": "workspace:*",
+    "@randall-plugins/map": "workspace:*",
+    "@randall/plugin-sdk": "workspace:*",
+    "@randall/plugin-sdk-editor": "workspace:*",
     "templates": "workspace:*",
     "maplibre-gl": "~5.6.0",
     "lodash": "^4.17.21"

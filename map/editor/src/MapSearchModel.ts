@@ -1,5 +1,5 @@
 import { action, makeObservable, observable } from 'mobx'
-import { WidgetEditorHost } from '@randall/widget-sdk-editor'
+import { WidgetEditorHost } from '@randall/plugin-sdk-editor'
 import { GeocodeResult } from './GeocodeResult'
 
 export class MapSearchModel {

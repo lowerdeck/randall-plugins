@@ -1,5 +1,5 @@
 import { isEqual } from 'lodash'
-import { MapMarker } from '@randall-widgets/map'
+import { MapMarker } from '@randall-plugins/map'
 import { Attribute, GeoPoint } from 'templates'
 
 // A marker as edited in the map dialog: its evaluated look and location with the dialog's edits applied, and the raw

@@ -1,4 +1,4 @@
-import { isShapeName, markerGlyphTransform, markerHole, markerPath, markerViewBox, shapes } from '@randall-widgets/map'
+import { isShapeName, markerGlyphTransform, markerHole, markerPath, markerViewBox, shapes } from '@randall-plugins/map'
 
 // The map pin as a DOM element, looking like the one drawn by the renderers.
 export function createPinElement(options: PinElementOptions): HTMLElement {

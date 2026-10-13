@@ -1,4 +1,4 @@
-import { WidgetSettings } from '@randall/widget-sdk'
+import { WidgetSettings } from '@randall/plugin-sdk'
 
 // Maps are optional: without a provider, the map widget is not available.
 export const mapSettings: WidgetSettings<{provider: string}> = {

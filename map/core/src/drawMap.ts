@@ -1,4 +1,4 @@
-import { WidgetDrawContext } from '@randall/widget-sdk'
+import { WidgetDrawContext } from '@randall/plugin-sdk'
 import { GeoPoint } from 'templates'
 import { MapProps } from './MapProps'
 import { drawMarker } from './marker'

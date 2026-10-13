@@ -1,6 +1,6 @@
 import { useRef } from 'react'
 import { observer } from 'mobx-react'
-import { useWidgetUI } from '@randall/widget-sdk-editor'
+import { useWidgetUI } from '@randall/plugin-sdk-editor'
 import { useBoolean } from './useBoolean'
 import { strings } from './strings'
 import { sx$ } from './sx'

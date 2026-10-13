@@ -1,8 +1,12 @@
-import { defineServerPlugin, WidgetRequestError, WidgetServerContext } from '@randall/widget-sdk-server'
-import { mapWidget, parseTilePath } from '@randall-widgets/map'
-import { geocode, fetchTile } from './maptiler'
-import { MapSettings, mapSettingsHandler, maptilerAPIKey } from './settings'
+import { mapWidget, parseTilePath } from '@randall-plugins/map'
+import {
+  defineServerPlugin,
+  WidgetRequestError,
+  WidgetServerContext,
+} from '@randall/plugin-sdk-server'
 import { TileCache } from './TileCache'
+import { fetchTile, geocode } from './maptiler'
+import { MapSettings, mapSettingsHandler, maptilerAPIKey } from './settings'
 
 export const mapServerPlugin = defineServerPlugin<MapSettings>({
   widget:   mapWidget,

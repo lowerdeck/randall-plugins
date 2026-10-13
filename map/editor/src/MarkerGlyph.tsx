@@ -1,6 +1,6 @@
 import { memo } from 'react'
 import { Box } from '@mui/joy'
-import { isShapeName, shapes, shapeViewBox } from '@randall-widgets/map'
+import { isShapeName, shapes, shapeViewBox } from '@randall-plugins/map'
 import { sx$ } from './sx'
 
 export interface MarkerGlyphProps {

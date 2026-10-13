@@ -1,5 +1,5 @@
 import { Rect } from 'templates'
-import { WidgetPrepareContext } from '@randall/widget-sdk'
+import { WidgetPrepareContext } from '@randall/plugin-sdk'
 import { MapViewport, visibleTiles } from './geo'
 import { MapProps } from './MapProps'
 import { tilePath } from './tilePath'

@@ -1,8 +1,8 @@
 import { Option, Select } from '@mui/joy'
 import { SyntheticEvent, useCallback } from 'react'
-import { mapStyles } from '@randall-widgets/map'
+import { mapStyles } from '@randall-plugins/map'
 import { observer } from 'mobx-react'
-import { useWidgetUI } from '@randall/widget-sdk-editor'
+import { useWidgetUI } from '@randall/plugin-sdk-editor'
 import { sx$ } from './sx'
 import { MapEditorModel } from './MapEditorModel'
 
