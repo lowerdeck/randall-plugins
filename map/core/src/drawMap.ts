@@ -1,6 +1,6 @@
 import { WidgetDrawContext } from '@randall/plugin-sdk'
-import { drawAttribution } from './drawAttribution'
 import { MapProps } from './MapProps'
+import { drawAttribution } from './drawAttribution'
 import { drawMarker } from './marker'
 import { MapResources } from './prepareMap'
 
@@ -25,9 +25,9 @@ export function drawMap(ctx: CanvasRenderingContext2D, props: MapProps, {size, r
   ctx.restore()
 
   props.markers.forEach((marker, index) => {
-    const location = resources.markers[index]
-    if (location == null || marker.size <= 0) { return }
-
+    if (marker.size <= 0) { return }
+    
+    const location = resources.markers[index] ?? MapProps.defaultCenter()
     const [x, y] = resources.viewport.pointToPixel(location, size)
     drawMarker(ctx, createPath, [x, y], marker.size, marker.color, marker.icon)
   })
