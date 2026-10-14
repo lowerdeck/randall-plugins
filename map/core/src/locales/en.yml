@@ -82,3 +82,4 @@ resolvers:
     detail: Looks up the address or place in this param on the map, and fills in its location for a map to show.
     fields:
       location_param: Location param
+      name_param: Name param
