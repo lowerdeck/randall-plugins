@@ -1,8 +1,9 @@
 import { WidgetEdit } from './WidgetEdit'
 import { WidgetEditState } from './WidgetEditState'
 
-/** A button in the dialog's toolbar, next to the search bar, that edits the widget in one go. */
+/** A button in the header of a fieldset, that edits the widget in one go. */
 export interface WidgetAction {
+  /** An i18next key in the plugin's locale. */
   label: string
   icon?: string
 

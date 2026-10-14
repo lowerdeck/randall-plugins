@@ -1,0 +1,73 @@
+label: Map
+
+fieldsets:
+  map:
+    caption: Map
+
+params:
+  center:
+    caption: Center
+  zoom:
+    caption: Zoom
+  bounds:
+    caption: Bounds
+  map_style:
+    caption: Style
+  grayscale:
+    caption: Grayscale
+    true_label: Show in grayscale
+    false_label: Show full-color
+  labels:
+    caption: Labels
+    true_label: Show labels
+    false_label: Hide labels
+  map_opacity:
+    caption: Opacity
+  attribution:
+    caption: Attribution
+    true_label: Show attribution
+    false_label: Do not show attribution
+  markers:
+    caption: Markers
+    item: Marker
+    params:
+      location:
+        caption: Location
+      icon:
+        caption: Icon
+      color:
+        caption: Color
+      size:
+        caption: Size
+
+map_styles:
+  streets-v2: Streets
+  basic-v2:   Basic
+  bright-v2:  Bright
+  outdoor-v2: Outdoor
+  topo-v2:    Topo
+  dataviz:    Dataviz
+  backdrop:   Backdrop
+  toner-v2:   Toner
+  winter-v2:  Winter
+  satellite:  Satellite
+
+shapes:
+  circle:   Circle
+  square:   Square
+  diamond:  Diamond
+  triangle: Triangle
+  pentagon: Pentagon
+  hexagon:  Hexagon
+  star:     Star
+  heart:    Heart
+  plus:     Plus
+  cross:    Cross
+
+settings:
+  provider:
+    caption:  Provider
+    none:     None
+    maptiler: MapTiler
+  api_key:
+    caption: API key

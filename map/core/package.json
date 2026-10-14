@@ -23,7 +23,11 @@
     "@randall/plugin-sdk": "workspace:*",
     "zod": "^4.1.5"
   },
+  "peerDependencies": {
+    "react": ">=19"
+  },
   "devDependencies": {
+    "@types/react": ">=19",
     "rimraf": "^6.0.1",
     "typescript": "^5.8.3"
   }

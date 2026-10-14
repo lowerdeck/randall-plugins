@@ -2,11 +2,10 @@ import { GeoPoint, MapMarker, MapViewport } from '@randall-plugins/map'
 import { WidgetAction, WidgetEditState } from '@randall/plugin-sdk-editor'
 import { mapMarkers } from './mapMarkers'
 import { centerOn, isViewLocked, roundPoint, roundZoom } from './mapView'
-import { strings } from './strings'
 
 // Fits the view around all pins. A single pin is just centered on, as fitting a point would zoom in all the way.
 export const fitToMarkers: WidgetAction = {
-  label:   strings.fitToMarkers,
+  label:   'actions.fit_to_markers',
   icon:    'arrows-to-dot',
   enabled: state => !isViewLocked(state) && pinned(state).length > 0,
   apply:   state => {

@@ -1,23 +1,10 @@
-import { MapProps, MapViewport, MAX_ZOOM, scaleZoom } from '@randall-plugins/map'
-import {
-  listIndex,
-  WidgetContentContext,
-  WidgetContentInstance,
-  WidgetContentState,
-  widgetPath,
-} from '@randall/plugin-sdk-editor'
-import { AttributionControl, Map as MapLibreMap, MapMouseEvent, NavigationControl, RasterTileSource } from 'maplibre-gl'
+import { MapProps, MapViewport, MAX_ZOOM, scaleZoom, tileStyle } from '@randall-plugins/map'
+import { WidgetContentContext, WidgetContentInstance, WidgetContentState, listIndex, widgetPath } from '@randall/plugin-sdk-editor'
 import 'maplibre-gl/dist/maplibre-gl.css'
+import { AttributionControl, Map as MapLibreMap, MapMouseEvent, NavigationControl, RasterTileSource } from 'maplibre-gl'
 import { MapPins } from './MapPins'
 import { centerOn, isViewLocked, mapView, roundPoint, roundZoom, sameView } from './mapView'
-import {
-  RasterPaint,
-  rasterPaint,
-  rasterStyle,
-  TILES_LAYER,
-  TILES_SOURCE,
-  tileURLTemplate,
-} from './rasterStyle'
+import { RasterPaint, rasterPaint, rasterStyle, TILES_LAYER, tileURLTemplate, TILES_SOURCE } from './rasterStyle'
 
 // An interactive map, showing the same extent as the widget. Params are in widget zoom units, which are converted to
 // and from the zoom of the (differently sized) map on screen.
@@ -225,7 +212,8 @@ function isOnPin(event: MapMouseEvent) {
 }
 
 function styleOf(state: WidgetContentState) {
-  return typeof state.values.map_style === 'string' ? state.values.map_style : ''
+  const {map_style, labels} = MapProps.resolve(state.values)
+  return tileStyle(map_style, labels)
 }
 
 function disableNavigation(map: MapLibreMap) {

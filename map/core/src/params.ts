@@ -1,31 +1,49 @@
-import { param } from '@randall/plugin-sdk'
+import { form, formParams, param } from '@randall/plugin-sdk'
 import { MapMarker, markerParams } from './MapMarker'
 import { GeoBounds, GeoPoint } from './geo'
-import { mapStyles } from './styles'
+import { hasLabelToggle, mapStyles } from './styles'
 
-export const mapParams = {
-  center: param.custom({label: 'Center', schema: GeoPoint.paramSchema.nullable(), default: null}),
-  zoom:   param.number({label: 'Zoom', min: 0, max: 22, default: 12, edit: 'dialog'}),
-  bounds: param.custom({label: 'Bounds', schema: GeoBounds.schema.nullable(), default: null}),
+export const mapForm = [
+  form.hidden([
+    param.custom('center', {
+      schema:  GeoPoint.paramSchema.nullable(), 
+      default: null,
+    }),
 
-  map_style: param.choice({
-    label:   'Style',
-    choices: mapStyles.map(it => ({value: it.id, label: it.label})),
-    default: mapStyles[0].id,
-    edit:    'dialog',
-  }),
+    param.number('zoom', {
+      min:     0, 
+      max:     22, 
+      default: 12,
+    }),
 
-  grayscale:   param.boolean({label: 'Grayscale', default: false, edit: 'dialog'}),
-  map_opacity: param.number({label: 'Opacity', int: true, min: 0, max: 100, default: 100, edit: 'dialog'}),
+    param.custom('bounds', {
+      schema:  GeoBounds.schema.nullable(), 
+      default: null,
+    }),
+  ]),
 
-  // MapTiler and OpenStreetMap require it, unless shown elsewhere.
-  attribution: param.boolean({label: 'Attribution', default: true, edit: 'dialog'}),
+  form.fieldset('map', [
 
-  markers: param.list({
-    label:     'Markers',
-    itemLabel: 'Marker',
-    item:      markerParams,
+    param.choice('map_style', {
+      choices: mapStyles.map(it => ({value: it.id, label: `map_styles.${it.id}`})),
+      default: mapStyles[0].id,
+      edit:    'dialog',
+    }),
+
+    param.boolean('labels', {default: true, edit: 'dialog', visible: values => hasLabelToggle(`${values.map_style}`)}),
+    param.boolean('grayscale', {default: false, edit: 'dialog'}),
+    param.number('map_opacity', {int: true, min: 0, max: 100, default: 100, edit: 'dialog'}),
+
+    // MapTiler and OpenStreetMap require it, unless shown elsewhere.
+    param.boolean('attribution', {default: true, edit: 'dialog'}),
+  ]),
+
+  form.repeaterFieldset('markers', {
+    itemLabel: 'params.markers.item',
+    item:      param.object('marker', {params: markerParams}),
     default:   [MapMarker.create({lat: 52.3731, lng: 4.8926})],
     edit:      'dialog',
   }),
-}
+]
+
+export const mapParams = formParams(mapForm)

@@ -1,23 +1,25 @@
-import { param, resolveParams, WidgetProps } from '@randall/plugin-sdk'
+import { ChoiceFieldVariant, namedParams, param, resolveParams, WidgetProps } from '@randall/plugin-sdk'
 import { GeoPoint } from './geo'
-import { shapeNames, shapes, shapeViewBox } from './marker/shapes'
+import { shapeIcon } from './marker/shapeIcon'
+import { shapeNames } from './marker/shapes'
 
-export const markerParams = {
-  location: param.custom({label: 'Location', schema: GeoPoint.paramSchema.nullable(), default: null}),
+export const markerParams = [
+  param.custom('location', {schema: GeoPoint.paramSchema.nullable(), default: null}),
 
   // The name of a shape from `shapes`, drawn inside the pin.
-  icon: param.choice({
-    label:   'Icon',
-    grid:    true,
-    choices: shapeNames.map(it => ({value: it, label: it, glyph: {path: shapes[it], viewBox: shapeViewBox}})),
+  param.choice('icon', {
+    variant: ChoiceFieldVariant.Grid,
+    choices: shapeNames.map(it => ({value: it, label: `shapes.${it}`, render: () => shapeIcon(it)})),
     default: null,
   }),
 
-  color: param.color({label: 'Color', default: '#E53935'}),
-  size:  param.number({label: 'Size', min: 0, default: 48}),
-}
+  param.color('color', {default: '#E53935'}),
+  param.number('size', {min: 0, default: 48}),
+]
 
-export type MapMarker = WidgetProps<typeof markerParams>
+const markerParamsByName = namedParams(markerParams)
+
+export type MapMarker = WidgetProps<typeof markerParamsByName>
 
 export namespace MapMarker {
 
@@ -26,7 +28,7 @@ export namespace MapMarker {
   }
 
   export function resolve(raw: Record<string, unknown>): MapMarker {
-    return resolveParams(markerParams, raw)
+    return resolveParams(markerParamsByName, raw)
   }
 
 }
