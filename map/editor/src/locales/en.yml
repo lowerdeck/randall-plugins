@@ -1,0 +1,9 @@
+search:
+  placeholder: Search for a place or address…
+
+actions:
+  fit_to_markers: Fit map around pins
+
+markers:
+  actions:
+    center_on_marker: Center on marker

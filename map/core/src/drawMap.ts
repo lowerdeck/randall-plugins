@@ -1,4 +1,5 @@
 import { WidgetDrawContext } from '@randall/plugin-sdk'
+import { drawAttribution } from './drawAttribution'
 import { GeoPoint } from './geo'
 import { MapProps } from './MapProps'
 import { drawMarker } from './marker'
@@ -8,6 +9,10 @@ export function drawMap(ctx: CanvasRenderingContext2D, props: MapProps, {size, r
   ctx.save()
   ctx.imageSmoothingEnabled = true
   ctx.imageSmoothingQuality = 'high'
+  ctx.globalAlpha = props.map_opacity / 100
+  if (props.grayscale) {
+    ctx.filter = 'grayscale(1)'
+  }
 
   for (const {rect, image} of resources.tiles) {
     // Snap to whole pixels so that neighbouring tiles meet without seams.
@@ -25,5 +30,9 @@ export function drawMap(ctx: CanvasRenderingContext2D, props: MapProps, {size, r
 
     const [x, y] = resources.viewport.pointToPixel(marker.location, size)
     drawMarker(ctx, createPath, [x, y], marker.size, marker.color, marker.icon)
+  }
+
+  if (props.attribution) {
+    drawAttribution(ctx, size)
   }
 }

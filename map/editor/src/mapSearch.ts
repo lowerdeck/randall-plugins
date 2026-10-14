@@ -3,11 +3,10 @@ import { listIndex, WidgetChange, widgetPath, WidgetSearch } from '@randall/plug
 import { GeocodeResult } from './GeocodeResult'
 import { mapMarkers } from './mapMarkers'
 import { isViewLocked, roundPoint } from './mapView'
-import { strings } from './strings'
 
 // Moves the selected (or first) marker to the result, or adds one if there are none, and shows the result.
 export const mapSearch: WidgetSearch<GeocodeResult> = {
-  placeholder: strings.searchPlaceholder,
+  placeholder: 'search.placeholder',
 
   search: (query, host) => host.query<GeocodeResult[]>('geocode', {query}),
   label:  result => result.label,

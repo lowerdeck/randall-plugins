@@ -6,6 +6,7 @@ import { WidgetEditState } from './WidgetEditState'
  * A search bar above the content, like for finding a place on a map. Picking a result edits the widget.
  */
 export interface WidgetSearch<R = any> {
+  /** An i18next key in the plugin's locale. */
   placeholder?: string
 
   search(query: string, host: WidgetEditorHost): Promise<R[]>

@@ -1,10 +1,10 @@
-import { MapViewport, MAX_ZOOM, scaleZoom } from '@randall-plugins/map'
+import { MapProps, MapViewport, MAX_ZOOM, scaleZoom, tileStyle } from '@randall-plugins/map'
 import { WidgetContentContext, WidgetContentInstance, WidgetContentState, listIndex, widgetPath } from '@randall/plugin-sdk-editor'
 import 'maplibre-gl/dist/maplibre-gl.css'
-import { Map as MapLibreMap, MapMouseEvent, NavigationControl, RasterTileSource } from 'maplibre-gl'
+import { AttributionControl, Map as MapLibreMap, MapMouseEvent, NavigationControl, RasterTileSource } from 'maplibre-gl'
 import { MapPins } from './MapPins'
 import { centerOn, isViewLocked, mapView, roundPoint, roundZoom, sameView } from './mapView'
-import { rasterStyle, tileURLTemplate, TILES_SOURCE } from './rasterStyle'
+import { RasterPaint, rasterPaint, rasterStyle, TILES_LAYER, tileURLTemplate, TILES_SOURCE } from './rasterStyle'
 
 // An interactive map, showing the same extent as the widget. Params are in widget zoom units, which are converted to
 // and from the zoom of the (differently sized) map on screen.
@@ -18,13 +18,13 @@ export class MapContent implements WidgetContentInstance {
     this.view = mapView(state)
     this.map = new MapLibreMap({
       container:          container,
-      style:              rasterStyle(this.style, context.host),
+      style:              rasterStyle(this.style, context.host, this.paint),
       center:             [this.view.center.lng, this.view.center.lat],
       zoom:               this.toMapZoom(this.view.zoom),
       minZoom:            this.minZoom,
       maxZoom:            this.maxZoom,
       transformRequest:   url => context.host.authorizeRequest(url),
-      attributionControl: {compact: true},
+      attributionControl: false,
       trackResize:        false,
       dragRotate:         false,
       pitchWithRotate:    false,
@@ -49,10 +49,12 @@ export class MapContent implements WidgetContentInstance {
 
     this.pins = new MapPins(this.map, context)
     this.pins.update(state)
+    this.updateAttribution()
     this.updateCursor()
   }
 
   private readonly map: MapLibreMap
+  private readonly attribution = new AttributionControl({compact: true})
   private readonly pins: MapPins
 
   /** The view last shown or reported, to tell edits coming back from ones made elsewhere. */
@@ -77,6 +79,11 @@ export class MapContent implements WidgetContentInstance {
     if (styleOf(prev) !== this.style) {
       this.map.getSource<RasterTileSource>(TILES_SOURCE)?.setTiles([tileURLTemplate(this.style, this.context.host)])
     }
+    if (this.map.getLayer(TILES_LAYER) != null) {
+      for (const [name, value] of Object.entries(rasterPaint(this.paint))) {
+        this.map.setPaintProperty(TILES_LAYER, name, value)
+      }
+    }
 
     const view = mapView(state)
     if (resized) {
@@ -87,6 +94,7 @@ export class MapContent implements WidgetContentInstance {
     this.view = view
 
     this.pins.update(state)
+    this.updateAttribution()
     this.updateCursor()
   }
 
@@ -125,6 +133,11 @@ export class MapContent implements WidgetContentInstance {
     return styleOf(this.state)
   }
 
+  private get paint(): RasterPaint {
+    const {grayscale, map_opacity} = MapProps.resolve(this.state.values)
+    return {grayscale, opacity: map_opacity}
+  }
+
   private get selectedIndex() {
     return listIndex(this.state.selection, 'markers')
   }
@@ -132,6 +145,16 @@ export class MapContent implements WidgetContentInstance {
   private get canPlaceSelected() {
     const index = this.selectedIndex
     return index != null && !this.state.isLocked(widgetPath('markers', index, 'location'))
+  }
+
+  private updateAttribution() {
+    const shown = this.map.hasControl(this.attribution)
+    const {attribution} = MapProps.resolve(this.state.values)
+    if (attribution && !shown) {
+      this.map.addControl(this.attribution)
+    } else if (!attribution && shown) {
+      this.map.removeControl(this.attribution)
+    }
   }
 
   private updateCursor() {
@@ -189,7 +212,8 @@ function isOnPin(event: MapMouseEvent) {
 }
 
 function styleOf(state: WidgetContentState) {
-  return typeof state.values.map_style === 'string' ? state.values.map_style : ''
+  const {map_style, labels} = MapProps.resolve(state.values)
+  return tileStyle(map_style, labels)
 }
 
 function disableNavigation(map: MapLibreMap) {

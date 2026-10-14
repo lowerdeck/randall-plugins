@@ -12,6 +12,7 @@ export interface WidgetListEditor {
 }
 
 export interface WidgetItemAction {
+  /** An i18next key in the plugin's locale. */
   label: string
   icon?: string
 

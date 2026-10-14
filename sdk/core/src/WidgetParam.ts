@@ -5,8 +5,8 @@ import { WidgetField } from './WidgetField'
  * A param of a widget: a prop that templates can set. Its schema is the single definition of a valid value, used when
  * editing as well as when rendering. See `param` for params with default schemas; plugins can make any other.
  */
-export interface WidgetParam<T = unknown> {
-  label:   string
+export interface WidgetParam<T = unknown, N extends string = string> {
+  name:    N
   schema:  z.ZodType<T>
   default: T
 
@@ -14,10 +14,11 @@ export interface WidgetParam<T = unknown> {
   field?: WidgetField
   edit?:  WidgetParamEdit
 
-  /** The fieldset in the properties panel, which defaults to the widget's label. */
-  group?: string
+  /** Whether it's shown, given the values of the widget, or of the object it's in. Shown by default. */
+  visible?(values: Record<string, unknown>): boolean
 }
 
+/** Params by name. See `namedParams` to make them from a list. */
 export type WidgetParams = Record<string, WidgetParam<any>>
 
 /** The props that a widget draws with, given its params. */
@@ -36,4 +37,8 @@ export type WidgetParamEdit = 'panel' | 'dialog' | 'content'
 
 export function paramEdit(param: WidgetParam): WidgetParamEdit {
   return param.edit ?? (param.field == null ? 'content' : 'panel')
+}
+
+export function paramVisible(param: WidgetParam, values: Record<string, unknown>): boolean {
+  return param.visible?.(values) ?? true
 }

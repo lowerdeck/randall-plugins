@@ -1,12 +1,15 @@
 import { resolveParams } from './resolveParams'
 import { Widget } from './Widget'
-import { WidgetParams, WidgetProps } from './WidgetParam'
+import { FormParams, formParams, WidgetForm } from './WidgetForm'
+import { WidgetProps } from './WidgetParam'
 
-export function defineWidget<Ps extends WidgetParams, R = undefined>(
-  widget: Omit<Widget<WidgetProps<Ps>, R>, 'params' | 'resolveProps'> & {params: Ps},
-): Widget<WidgetProps<Ps>, R> {
+export function defineWidget<F extends WidgetForm, R = undefined>(
+  widget: Omit<Widget<WidgetProps<FormParams<F>>, R>, 'form' | 'params' | 'resolveProps'> & {form: F},
+): Widget<WidgetProps<FormParams<F>>, R> {
+  const params = formParams(widget.form)
   return {
     ...widget,
-    resolveProps: raw => resolveParams(widget.params, raw),
+    params:       params,
+    resolveProps: raw => resolveParams(params, raw),
   }
 }

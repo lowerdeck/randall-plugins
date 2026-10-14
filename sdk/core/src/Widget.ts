@@ -1,5 +1,6 @@
 import { WidgetDrawContext } from './WidgetDrawContext'
 import { WidgetHost } from './WidgetHost'
+import { WidgetForm } from './WidgetForm'
 import { WidgetParams } from './WidgetParam'
 import { WidgetSettings } from './WidgetSettings'
 import { WidgetSize } from './WidgetSize'
@@ -10,7 +11,11 @@ import { WidgetSize } from './WidgetSize'
  */
 export interface Widget<P = any, R = any> {
   name:   string
+  /** An i18next key in the plugin's locale. */
   label:  string
+  form:   WidgetForm
+
+  /** All params of the form, by name. */
   params: WidgetParams
 
   /** Organisation-wide settings, like provider credentials. */

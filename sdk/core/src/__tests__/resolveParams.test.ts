@@ -1,22 +1,22 @@
 import { describe, expect, it } from 'vitest'
 import { z } from 'zod'
+import { namedParams } from '../namedParams'
 import { param } from '../param'
 import { resolveParams } from '../resolveParams'
 
 describe('resolveParams', () => {
 
-  const params = {
-    zoom:   param.number({label: 'Zoom', min: 0, max: 22, default: 12}),
-    style:  param.choice({label: 'Style', choices: [{value: 'a', label: 'A'}, {value: 'b', label: 'B'}], default: 'a'}),
-    shown:  param.boolean({label: 'Shown', default: true}),
-    origin: param.custom({label: 'Origin', schema: z.tuple([z.number(), z.number()]).nullable(), default: null}),
-    items:  param.list({
-      label:     'Items',
+  const params = namedParams([
+    param.number('zoom', {min: 0, max: 22, default: 12}),
+    param.choice('style', {choices: [{value: 'a', label: 'A'}, {value: 'b', label: 'B'}], default: 'a'}),
+    param.boolean('shown', {default: true}),
+    param.custom('origin', {schema: z.tuple([z.number(), z.number()]).nullable(), default: null}),
+    param.array('items', {
       itemLabel: 'Item',
-      item:      {color: param.color({label: 'Color', default: '#ff0000'})},
+      item:      param.object('item', {params: [param.color('color', {default: '#ff0000'})]}),
       default:   [],
     }),
-  }
+  ])
 
   it('fills in defaults for missing values', () => {
     expect(resolveParams(params, {})).toEqual({zoom: 12, style: 'a', shown: true, origin: null, items: []})
