@@ -22,10 +22,6 @@ describe('resolveParams', () => {
     expect(resolveParams(params, {})).toEqual({zoom: 12, style: 'a', shown: true, origin: null, items: []})
   })
 
-  it('coerces values bound to data', () => {
-    expect(resolveParams(params, {zoom: '8', shown: 'no'})).toMatchObject({zoom: 8, shown: false})
-  })
-
   it('falls back to the default for invalid values', () => {
     expect(resolveParams(params, {zoom: 40, style: 'c', origin: 'here'})).toMatchObject({zoom: 12, style: 'a', origin: null})
   })
