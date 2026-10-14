@@ -1,3 +1,4 @@
+import { WidgetAssistant } from './WidgetAssistant'
 import { WidgetDrawContext } from './WidgetDrawContext'
 import { WidgetHost } from './WidgetHost'
 import { WidgetForm } from './WidgetForm'
@@ -20,6 +21,9 @@ export interface Widget<P = any, R = any> {
 
   /** Organisation-wide settings, like provider credentials. */
   settings?: WidgetSettings
+
+  /** Offers the widget to the template editor's assistant. */
+  assistant?: WidgetAssistant
 
   /** The props to draw with, given the (evaluated) props of the spec, which may be incomplete. See `defineWidget`. */
   resolveProps(raw: Record<string, unknown>): P
