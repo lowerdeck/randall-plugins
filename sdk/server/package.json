@@ -20,7 +20,8 @@
     "lint": "eslint src"
   },
   "dependencies": {
-    "@randall/plugin-sdk": "workspace:*"
+    "@randall/plugin-sdk": "workspace:*",
+    "zod": "^4.1.5"
   },
   "devDependencies": {
     "rimraf": "^6.0.1",

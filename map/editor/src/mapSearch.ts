@@ -1,10 +1,9 @@
-import { MapMarker } from '@randall-plugins/map'
+import { formatLocation, GeocodeResult, MapMarker, MapViewport } from '@randall-plugins/map'
 import { listIndex, WidgetChange, widgetPath, WidgetSearch } from '@randall/plugin-sdk-editor'
-import { GeocodeResult } from './GeocodeResult'
 import { mapMarkers } from './mapMarkers'
-import { isViewLocked, roundPoint } from './mapView'
+import { isCenterLocked, roundZoom } from './mapView'
 
-// Moves the selected (or first) marker to the result, or adds one if there are none, and shows the result.
+// Moves the selected (or first) marker to the result, or adds one if there are none, and centers on the result.
 export const mapSearch: WidgetSearch<GeocodeResult> = {
   placeholder: 'search.placeholder',
 
@@ -15,7 +14,7 @@ export const mapSearch: WidgetSearch<GeocodeResult> = {
   apply: (result, state) => {
     const changes: WidgetChange[] = []
     const markers = mapMarkers(state)
-    const center = roundPoint(result.center)
+    const center = formatLocation(result.center)
 
     let select: string | undefined
     if (markers.length === 0) {
@@ -26,22 +25,17 @@ export const mapSearch: WidgetSearch<GeocodeResult> = {
       changes.push({path: widgetPath('markers', index, 'location'), value: center})
     }
 
-    if (!isViewLocked(state)) {
-      if (result.bounds != null) {
-        changes.push({path: 'bounds', value: result.bounds})
-      } else {
-        changes.push(
-          {path: 'center', value: center},
-          {path: 'zoom', value: SEARCH_RESULT_ZOOM},
-          {path: 'bounds', value: null},
-        )
-      }
-    }
+    // Zoomed to fit the result, like a whole country. Bound values are left alone.
+    const zoom = result.bounds == null ? SEARCH_RESULT_ZOOM : MapViewport.fitBounds(result.bounds, state.size).zoom
+    changes.push(
+      {path: 'center', value: center},
+      {path: 'zoom', value: roundZoom(zoom)},
+    )
 
     return {changes, select}
   },
 
-  enabled: state => !state.isLocked('markers') || !isViewLocked(state),
+  enabled: state => !state.isLocked('markers') || !isCenterLocked(state),
 }
 
 const SEARCH_RESULT_ZOOM = 14

@@ -1,16 +1,20 @@
 label: Map
 
 fieldsets:
+  view:
+    caption: View
   map:
     caption: Map
+
+fields:
+  lat: Lat
+  lng: Lng
 
 params:
   center:
     caption: Center
   zoom:
     caption: Zoom
-  bounds:
-    caption: Bounds
   map_style:
     caption: Style
   grayscale:
@@ -71,3 +75,10 @@ settings:
     maptiler: MapTiler
   api_key:
     caption: API key
+
+resolvers:
+  geocode:
+    label: Look up location
+    detail: Looks up the address or place in this param on the map, and fills in its location for a map to show.
+    fields:
+      location_param: Location param

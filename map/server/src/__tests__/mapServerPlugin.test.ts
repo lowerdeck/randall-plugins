@@ -1,6 +1,6 @@
 import { WidgetRequestError, WidgetServerContext } from '@randall/plugin-sdk-server'
 import { afterEach, describe, expect, it, vi } from 'vitest'
-import { mapServerPlugin } from '../mapServerPlugin'
+import { mapServerPlugin } from '../map.server-plugin'
 import { MapSettings } from '../settings'
 import { fakeSecrets } from './fakeSecrets'
 

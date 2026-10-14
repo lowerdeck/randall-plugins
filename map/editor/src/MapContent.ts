@@ -1,9 +1,10 @@
-import { MapProps, MapViewport, MAX_ZOOM, scaleZoom, tileStyle } from '@randall-plugins/map'
+import { formatLocation, MapProps, MapViewport, MAX_ZOOM, scaleZoom, tileStyle } from '@randall-plugins/map'
 import { WidgetContentContext, WidgetContentInstance, WidgetContentState, listIndex, widgetPath } from '@randall/plugin-sdk-editor'
 import 'maplibre-gl/dist/maplibre-gl.css'
 import { AttributionControl, Map as MapLibreMap, MapMouseEvent, NavigationControl, RasterTileSource } from 'maplibre-gl'
+import { MapLocator } from './MapLocator'
 import { MapPins } from './MapPins'
-import { centerOn, isViewLocked, mapView, roundPoint, roundZoom, sameView } from './mapView'
+import { centerOn, isCenterLocked, isZoomLocked, mapView, roundPoint, roundZoom, sameView } from './mapView'
 import { RasterPaint, rasterPaint, rasterStyle, TILES_LAYER, tileURLTemplate, TILES_SOURCE } from './rasterStyle'
 
 // An interactive map, showing the same extent as the widget. Params are in widget zoom units, which are converted to
@@ -33,14 +34,9 @@ export class MapContent implements WidgetContentInstance {
       // Double-clicking pans instead: a zoom is easy to do by accident, and hard to undo.
       doubleClickZoom: false,
     })
-    this.map.touchZoomRotate.disableRotation()
-    this.map.keyboard.disableRotation()
-    if (isViewLocked(state)) {
-      disableNavigation(this.map)
-    } else {
-      // Its buttons pass on their click events, so their zooms count as user gestures, and are kept.
-      this.map.addControl(new NavigationControl({showCompass: false}), 'top-right')
-    }
+    this.map.boxZoom.disable()
+    this.map.keyboard.disable()
+    this.updateNavigation()
 
     this.map.on('movestart', this.handleMoveStart)
     this.map.on('moveend', this.handleMoveEnd)
@@ -51,11 +47,20 @@ export class MapContent implements WidgetContentInstance {
     this.pins.update(state)
     this.updateAttribution()
     this.updateCursor()
+
+    // Shows locations that had to be looked up once they're known.
+    this.locator = new MapLocator(context.host, () => this.update(this.state))
+    this.locator.update(state)
   }
 
   private readonly map: MapLibreMap
   private readonly attribution = new AttributionControl({compact: true})
+
+  // Its buttons pass on their click events, so their zooms count as user gestures, and are kept.
+  private readonly navigation = new NavigationControl({showCompass: false})
+  private navigationState: {pan: boolean, zoom: boolean} | null = null
   private readonly pins: MapPins
+  private readonly locator: MapLocator
 
   /** The view last shown or reported, to tell edits coming back from ones made elsewhere. */
   private view: MapViewport
@@ -94,11 +99,14 @@ export class MapContent implements WidgetContentInstance {
     this.view = view
 
     this.pins.update(state)
+    this.locator.update(state)
+    this.updateNavigation()
     this.updateAttribution()
     this.updateCursor()
   }
 
   public dispose() {
+    this.locator.dispose()
     this.pins.dispose()
     this.map.remove()
   }
@@ -147,6 +155,34 @@ export class MapContent implements WidgetContentInstance {
     return index != null && !this.state.isLocked(widgetPath('markers', index, 'location'))
   }
 
+  // A bound center still allows zooming, around the center, and a bound zoom still allows panning.
+  private updateNavigation() {
+    const pan = !isCenterLocked(this.state)
+    const zoom = !isZoomLocked(this.state)
+    if (this.navigationState?.pan === pan && this.navigationState.zoom === zoom) { return }
+    this.navigationState = {pan, zoom}
+
+    const options = pan ? undefined : {around: 'center' as const}
+
+    toggle(this.map.dragPan, pan)
+
+    // Enabling again doesn't change the options, so they're disabled first.
+    this.map.scrollZoom.disable()
+    this.map.touchZoomRotate.disable()
+    if (zoom) {
+      this.map.scrollZoom.enable(options)
+      this.map.touchZoomRotate.enable(options)
+      this.map.touchZoomRotate.disableRotation()
+    }
+
+    const shown = this.map.hasControl(this.navigation)
+    if (zoom && !shown) {
+      this.map.addControl(this.navigation, 'top-right')
+    } else if (!zoom && shown) {
+      this.map.removeControl(this.navigation)
+    }
+  }
+
   private updateAttribution() {
     const shown = this.map.hasControl(this.attribution)
     const {attribution} = MapProps.resolve(this.state.values)
@@ -172,11 +208,11 @@ export class MapContent implements WidgetContentInstance {
 
     const center = this.map.getCenter().wrap()
     this.view = new MapViewport(roundPoint({lat: center.lat, lng: center.lng}), roundZoom(this.fromMapZoom(this.map.getZoom())))
+
     this.context.edit({
       changes: [
-        {path: 'center', value: this.view.center},
+        {path: 'center', value: formatLocation(this.view.center)},
         {path: 'zoom', value: this.view.zoom},
-        {path: 'bounds', value: null},
       ],
     })
   }
@@ -189,13 +225,13 @@ export class MapContent implements WidgetContentInstance {
 
     const {lat, lng} = event.lngLat.wrap()
     this.context.edit({
-      changes: [{path: widgetPath('markers', index, 'location'), value: roundPoint({lat, lng})}],
+      changes: [{path: widgetPath('markers', index, 'location'), value: formatLocation({lat, lng})}],
     })
   }
 
   // Pins center on themselves.
   private handleDoubleClick = (event: MapMouseEvent) => {
-    if (isOnPin(event) || isViewLocked(this.state)) { return }
+    if (isOnPin(event) || isCenterLocked(this.state)) { return }
 
     const {lat, lng} = event.lngLat.wrap()
     this.context.edit({changes: centerOn(this.state, roundPoint({lat, lng}))})
@@ -216,12 +252,12 @@ function styleOf(state: WidgetContentState) {
   return tileStyle(map_style, labels)
 }
 
-function disableNavigation(map: MapLibreMap) {
-  map.dragPan.disable()
-  map.scrollZoom.disable()
-  map.boxZoom.disable()
-  map.keyboard.disable()
-  map.touchZoomRotate.disable()
+function toggle(handler: {enable(): void, disable(): void}, enabled: boolean) {
+  if (enabled) {
+    handler.enable()
+  } else {
+    handler.disable()
+  }
 }
 
 const MIN_MAP_ZOOM = -2

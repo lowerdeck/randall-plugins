@@ -1,6 +1,6 @@
+import { GeocodeResult } from '@randall-plugins/map'
 import { WidgetEditState } from '@randall/plugin-sdk-editor'
 import { describe, expect, it } from 'vitest'
-import { GeocodeResult } from '../GeocodeResult'
 import { mapSearch } from '../mapSearch'
 
 describe('mapSearch', () => {
@@ -14,23 +14,20 @@ describe('mapSearch', () => {
   it('adds a marker if there are none, and selects it', () => {
     const edit = mapSearch.apply(result, state({markers: []}))
     expect(edit.select).toEqual('markers.0')
-    expect(edit.changes).toContainEqual({path: 'markers.0', value: expect.objectContaining({location: result.center})})
+    expect(edit.changes).toContainEqual({path: 'markers.0', value: expect.objectContaining({location: '52.3731, 4.8926'})})
   })
 
   it('moves the selected marker', () => {
     const edit = mapSearch.apply(result, state({markers: [{}, {}]}, {selection: 'markers.1'}))
-    expect(edit.changes).toContainEqual({path: 'markers.1.location', value: result.center})
+    expect(edit.changes).toContainEqual({path: 'markers.1.location', value: '52.3731, 4.8926'})
   })
 
-  it('shows the bounds of the result, if any', () => {
+  it('zooms to fit the bounds of the result, if any', () => {
     const bounds = {west: 4.7, south: 52.3, east: 5.0, north: 52.4}
     const edit = mapSearch.apply({...result, bounds}, state({markers: [{}]}))
-    expect(edit.changes).toContainEqual({path: 'bounds', value: bounds})
-  })
-
-  it('leaves the view alone if it is bound to data', () => {
-    const edit = mapSearch.apply(result, state({markers: [{}]}, {isLocked: path => path === 'zoom'}))
-    expect(edit.changes?.map(it => it.path)).toEqual(['markers.0.location'])
+    const zoom = edit.changes?.find(it => it.path === 'zoom')?.value
+    expect(zoom).toBeGreaterThan(8)
+    expect(zoom).toBeLessThan(14)
   })
 
 })

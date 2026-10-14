@@ -1,16 +1,16 @@
 import { mapWidget, parseTilePath } from '@randall-plugins/map'
-import {
-  defineServerPlugin,
-  WidgetRequestError,
-  WidgetServerContext,
-} from '@randall/plugin-sdk-server'
+import { defineServerPlugin, WidgetRequestError } from '@randall/plugin-sdk-server'
 import { TileCache } from './TileCache'
-import { fetchTile, geocode } from './maptiler'
-import { MapSettings, mapSettingsHandler, maptilerAPIKey } from './settings'
+import { cachedGeocode } from './cachedGeocode'
+import { geocodeParamResolver } from './geocode.param-resolver'
+import { fetchTile } from './maptiler'
+import { requireAPIKey } from './requireAPIKey'
+import { MapSettings, mapSettingsHandler } from './settings'
 
 export const mapServerPlugin = defineServerPlugin<MapSettings>({
-  widget:   mapWidget,
-  settings: mapSettingsHandler,
+  widget:         mapWidget,
+  settings:       mapSettingsHandler,
+  paramResolvers: [geocodeParamResolver],
 
   resource: async (path, context) => {
     const parsed = parseTilePath(path)
@@ -32,21 +32,13 @@ export const mapServerPlugin = defineServerPlugin<MapSettings>({
       if (query === '' || query.length > 256) {
         throw new WidgetRequestError(400, "Invalid query")
       }
-      return await geocode(requireAPIKey(context), query)
+      return await cachedGeocode(query, context)
     }
     default:
       throw new WidgetRequestError(404, `Unknown map query "${name}"`)
     }
   },
 })
-
-function requireAPIKey(context: WidgetServerContext<MapSettings>): string {
-  const key = maptilerAPIKey(context.settings, context.secrets)
-  if (key == null) {
-    throw new WidgetRequestError(503, "Maps are not configured for this organisation")
-  }
-  return key
-}
 
 // Raster tiles are some 20-100kB each. Both the editor and renders re-request the same tiles a lot.
 const tileCache = new TileCache<{data: Uint8Array, mimeType: string}>(2000)

@@ -1,17 +1,17 @@
-import { GeoPoint, MapMarker } from '@randall-plugins/map'
+import { formatLocation, GeoPoint, locateCached, MapMarker } from '@randall-plugins/map'
 import { listIndex, WidgetEditState, WidgetListEditor } from '@randall/plugin-sdk-editor'
 import { mapMarkers } from './mapMarkers'
-import { centerOn, isViewLocked, mapView, roundPoint } from './mapView'
+import { centerOn, isCenterLocked, mapView } from './mapView'
 
 export const markersEditor: WidgetListEditor = {
   type: 'list',
 
-  newItem: state => MapMarker.create(roundPoint(mapView(state).center)),
+  newItem: state => MapMarker.create(formatLocation(mapView(state).center)),
 
   actions: [{
     label:   'markers.actions.center_on_marker',
     icon:    'bullseye-pointer',
-    enabled: (state, path) => !isViewLocked(state) && markerLocation(state, path) != null,
+    enabled: (state, path) => !isCenterLocked(state) && markerLocation(state, path) != null,
     apply:   (state, path) => {
       const location = markerLocation(state, path)
       if (location == null) { return {} }
@@ -23,6 +23,6 @@ export const markersEditor: WidgetListEditor = {
 
 function markerLocation(state: WidgetEditState, path: string): GeoPoint | null {
   const index = listIndex(path, 'markers')
-  const location = index == null ? null : mapMarkers(state)[index]?.location
-  return GeoPoint.is(location) ? location : null
+  const marker = index == null ? null : mapMarkers(state)[index]
+  return marker == null ? null : locateCached(marker.location)
 }

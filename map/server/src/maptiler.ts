@@ -1,5 +1,5 @@
 import { WidgetRequestError, WidgetSettingsError } from '@randall/plugin-sdk-server'
-import { MapStyle, mapStyle, mapStyles, TileCoord, tileURL } from '@randall-plugins/map'
+import { GeoPoint, MapStyle, mapStyle, mapStyles, TileCoord, tileURL } from '@randall-plugins/map'
 import { GeocodingResult, parseGeocodingResults } from './geocodingResult'
 
 /**
@@ -32,6 +32,18 @@ export async function geocode(apiKey: string, query: string): Promise<GeocodingR
   const url = new URL(`${baseURL}/geocoding/${encodeURIComponent(query)}.json`)
   url.searchParams.set('key', apiKey)
   url.searchParams.set('limit', `${geocodingLimit}`)
+
+  const response = await fetch(url)
+  if (!response.ok) {
+    throw upstreamError(response.status)
+  }
+  return parseGeocodingResults(await response.json())
+}
+
+/** The places at a point, most specific first, like the address and then the city. */
+export async function reverseGeocode(apiKey: string, point: GeoPoint): Promise<GeocodingResult[]> {
+  const url = new URL(`${baseURL}/geocoding/${point.lng},${point.lat}.json`)
+  url.searchParams.set('key', apiKey)
 
   const response = await fetch(url)
   if (!response.ok) {

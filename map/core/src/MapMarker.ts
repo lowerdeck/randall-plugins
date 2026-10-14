@@ -1,10 +1,10 @@
 import { ChoiceFieldVariant, namedParams, param, resolveParams, WidgetProps } from '@randall/plugin-sdk'
-import { GeoPoint } from './geo'
 import { shapeIcon } from './marker/shapeIcon'
 import { shapeNames } from './marker/shapes'
 
 export const markerParams = [
-  param.custom('location', {schema: GeoPoint.paramSchema.nullable(), default: null}),
+  // "lat, lng", or a place to look up. See `locateAll`.
+  param.text('location', {default: ''}),
 
   // The name of a shape from `shapes`, drawn inside the pin.
   param.choice('icon', {
@@ -23,7 +23,7 @@ export type MapMarker = WidgetProps<typeof markerParamsByName>
 
 export namespace MapMarker {
 
-  export function create(location: GeoPoint | null, overrides: Partial<MapMarker> = {}): MapMarker {
+  export function create(location: string, overrides: Partial<MapMarker> = {}): MapMarker {
     return {...resolve({}), location, ...overrides}
   }
 

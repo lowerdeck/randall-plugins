@@ -1,13 +1,16 @@
 import { WidgetRect } from '@randall/plugin-sdk'
 import { WidgetPrepareContext } from '@randall/plugin-sdk'
-import { MapViewport, visibleTiles } from './geo'
+import { GeoPoint, MapViewport, visibleTiles } from './geo'
+import { locateAll } from './locations'
 import { MapProps } from './MapProps'
 import { tileStyle } from './styles'
 import { tilePath } from './tilePath'
 
-// Tiles that fail to load are reported and left out, so that a preview still shows the rest of the map.
+// Locations and tiles that fail to load are reported and left out, so that a preview still shows the rest of the map.
 export async function prepareMap(props: MapProps, {size, host}: WidgetPrepareContext): Promise<MapResources> {
-  const viewport = MapProps.viewport(props, size)
+  const locate = await locateAll(MapProps.locations(props), host, host.reportError)
+  const viewport = MapProps.viewport(props, locate)
+  const markers = props.markers.map(it => locate(it.location))
   const placed = visibleTiles(viewport, size)
 
   const style = tileStyle(props.map_style, props.labels)
@@ -22,11 +25,15 @@ export async function prepareMap(props: MapProps, {size, host}: WidgetPrepareCon
     }
   })
 
-  return {viewport, tiles}
+  return {viewport, markers, tiles}
 }
 
 export interface MapResources {
   viewport: MapViewport
+
+  /** The locations of the markers, by index. */
+  markers: Array<GeoPoint | null>
+
   tiles:    LoadedTile[]
 }
 

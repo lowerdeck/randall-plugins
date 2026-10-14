@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { MapViewport, project, unproject, visibleTiles } from '../geo'
+import { locateCached } from '../locations'
 import { MapProps } from '../MapProps'
 
 describe("mercator", () => {
@@ -61,11 +62,11 @@ describe("visibleTiles", () => {
 describe("MapProps", () => {
 
   it("centers on the first marker by default", () => {
-    const props = MapProps.resolve({markers: [{location: {lat: 10, lng: 20}}]})
-    const viewport = MapProps.viewport(props, {width: 100, height: 100})
+    const props = MapProps.resolve({markers: [{location: '10, 20'}]})
+    const viewport = MapProps.viewport(props, locateCached)
     expect(viewport.center).toEqual({lat: 10, lng: 20})
     expect(viewport.zoom).toEqual(12)
-    expect(props.markers).toEqual([{location: {lat: 10, lng: 20}, color: '#E53935', size: 48, icon: null}])
+    expect(props.markers).toEqual([{location: '10, 20', color: '#E53935', size: 48, icon: null}])
   })
 
 })

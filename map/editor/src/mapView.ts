@@ -1,23 +1,30 @@
-import { GeoPoint, MapProps, MapViewport, MAX_ZOOM } from '@randall-plugins/map'
+import { formatLocation, GeoPoint, locateCached, MapProps, MapViewport, MAX_ZOOM } from '@randall-plugins/map'
 import { WidgetChange, WidgetEditState } from '@randall/plugin-sdk-editor'
 
-/** The view as it will be rendered, in widget zoom units. */
+/** The view as it will be rendered, in widget zoom units, with the locations that have been looked up so far. */
 export function mapView(state: WidgetEditState): MapViewport {
-  return MapProps.viewport(MapProps.resolve(state.values), state.size)
+  return MapProps.viewport(MapProps.resolve(state.values), locateCached)
 }
 
 /** Centers the view on a point, keeping its zoom. */
 export function centerOn(state: WidgetEditState, point: GeoPoint): WidgetChange[] {
   return [
-    {path: 'center', value: point},
+    {path: 'center', value: formatLocation(point)},
     {path: 'zoom', value: roundZoom(mapView(state).zoom)},
-    {path: 'bounds', value: null},
   ]
 }
 
-// Bounds take precedence over center and zoom, so a bound bounds prop can't be overridden either.
+export function isCenterLocked(state: WidgetEditState) {
+  return state.isLocked('center')
+}
+
+export function isZoomLocked(state: WidgetEditState) {
+  return state.isLocked('zoom')
+}
+
+/** Whether the view can't be changed freely, as it can't be both moved and zoomed. */
 export function isViewLocked(state: WidgetEditState) {
-  return ['center', 'zoom', 'bounds'].some(it => state.isLocked(it))
+  return isCenterLocked(state) || isZoomLocked(state)
 }
 
 export function sameView(a: MapViewport, b: MapViewport) {

@@ -128,9 +128,12 @@ export namespace param {
     }
   }
 
-  /** A param with a schema of the plugin's own. Without a field, only the dialog's content can edit it. */
-  export function custom<const N extends string, T>(name: N, options: WidgetParamOptions<T> & {schema: z.ZodType<T>}): WidgetParam<T, N> {
-    return {name, ...options, edit: options.edit ?? 'content'}
+  /**
+   * A param with a schema of the plugin's own, and optionally a field, like a compound one. Without a field, only the
+   * dialog's content can edit it.
+   */
+  export function custom<const N extends string, T>(name: N, options: WidgetParamOptions<T> & {schema: z.ZodType<T>, field?: WidgetField}): WidgetParam<T, N> {
+    return {name, ...options}
   }
 
 }

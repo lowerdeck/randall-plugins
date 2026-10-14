@@ -8,6 +8,9 @@ export interface WidgetHost {
    */
   loadImage(path: string): Promise<CanvasImageSource>
 
+  /** Runs a query of the widget's server part, like geocoding an address. */
+  query<T>(name: string, params: Record<string, string>): Promise<T>
+
   /** Reports a problem that doesn't keep the widget from drawing. When rendering, it fails the render. */
   reportError(error: unknown): void
 }

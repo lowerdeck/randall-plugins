@@ -1,4 +1,5 @@
 export * from './geo'
+export * from './locations'
 export * from './MapMarker'
 export * from './MapProps'
 export * from './params'

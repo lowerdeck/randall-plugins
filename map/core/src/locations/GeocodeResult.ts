@@ -1,4 +1,4 @@
-import { GeoBounds, GeoPoint } from '@randall-plugins/map'
+import { GeoBounds, GeoPoint } from '../geo'
 
 export interface GeocodeResult {
   label:  string

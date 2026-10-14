@@ -1,24 +1,17 @@
 import { form, formParams, param } from '@randall/plugin-sdk'
 import { MapMarker, markerParams } from './MapMarker'
-import { GeoBounds, GeoPoint } from './geo'
 import { hasLabelToggle, mapStyles } from './styles'
 
 export const mapForm = [
-  form.hidden([
-    param.custom('center', {
-      schema:  GeoPoint.paramSchema.nullable(), 
-      default: null,
-    }),
+  form.fieldset('view', [
+    // Like the locations of markers. Without one, the map is centered on the first marker.
+    param.text('center', {default: '', edit: 'dialog'}),
 
     param.number('zoom', {
-      min:     0, 
-      max:     22, 
+      min:     0,
+      max:     22,
       default: 12,
-    }),
-
-    param.custom('bounds', {
-      schema:  GeoBounds.schema.nullable(), 
-      default: null,
+      edit:    'dialog',
     }),
   ]),
 
@@ -41,7 +34,7 @@ export const mapForm = [
   form.repeaterFieldset('markers', {
     itemLabel: 'params.markers.item',
     item:      param.object('marker', {params: markerParams}),
-    default:   [MapMarker.create({lat: 52.3731, lng: 4.8926})],
+    default:   [MapMarker.create('52.3731, 4.8926')],
     edit:      'dialog',
   }),
 ]

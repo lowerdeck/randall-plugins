@@ -1,4 +1,5 @@
 import { Widget } from '@randall/plugin-sdk'
+import { PluginParamResolver } from './PluginParamResolver'
 import { WidgetServerContext } from './WidgetServerContext'
 import { WidgetSettingsHandler } from './WidgetSettingsHandler'
 
@@ -16,6 +17,9 @@ export interface WidgetServerPlugin<S = any> {
 
   /** Answers a query from the widget's editor, like a geocoding search. */
   query?(name: string, params: Record<string, string>, context: WidgetServerContext<S>): Promise<unknown>
+
+  /** Resolvers that templates can put on their params. */
+  paramResolvers?: Array<PluginParamResolver<any, S>>
 }
 
 export interface WidgetResource {

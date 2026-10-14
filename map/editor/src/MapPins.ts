@@ -1,10 +1,10 @@
 import { WidgetContentContext, WidgetContentState, widgetPath } from '@randall/plugin-sdk-editor'
 import { isEqual } from 'lodash'
 import { Map as MapLibreMap, Marker } from 'maplibre-gl'
-import { GeoPoint } from '@randall-plugins/map'
+import { formatLocation, locateCached } from '@randall-plugins/map'
 import { createPinElement, setPinSelected } from './createPinElement'
 import { mapMarkers } from './mapMarkers'
-import { centerOn, isViewLocked, roundPoint } from './mapView'
+import { centerOn, isCenterLocked } from './mapView'
 
 // Shows the markers as draggable pins. They're rebuilt when the markers change, which is fine as drags only report at
 // their end, but not when the selection does, as dragging a pin selects it. Double-clicking a pin centers the map on it.
@@ -22,7 +22,10 @@ export class MapPins {
   public update(state: WidgetContentState) {
     this.state = state
 
-    const shown = [state.values.markers, state.size.width, state.displaySize.width]
+    const markers = mapMarkers(state)
+    const locations = markers.map(it => it == null ? null : locateCached(it.location))
+    const locked = markers.map((_, index) => state.isLocked(widgetPath('markers', index, 'location')))
+    const shown = [state.values.markers, locations, locked, state.size.width, state.displaySize.width]
     if (!isEqual(shown, this.shown)) {
       this.shown = shown
       this.buildPins(state)
@@ -41,7 +44,8 @@ export class MapPins {
     this.removePins()
 
     mapMarkers(state).forEach((marker, index) => {
-      if (marker == null || !GeoPoint.is(marker.location)) { return }
+      const location = marker == null ? null : locateCached(marker.location)
+      if (marker == null || location == null) { return }
 
       const path = widgetPath('markers', index)
       const height = Math.max(MIN_PIN_HEIGHT, marker.size * state.displaySize.width / state.size.width)
@@ -58,17 +62,18 @@ export class MapPins {
       pin.on('dragstart', () => this.context.edit({select: path}))
       pin.on('dragend', () => {
         const {lat, lng} = pin.getLngLat().wrap()
-        this.context.edit({changes: [{path: widgetPath(path, 'location'), value: roundPoint({lat, lng})}]})
+        this.context.edit({changes: [{path: widgetPath(path, 'location'), value: formatLocation({lat, lng})}]})
       })
-      pin.setLngLat([marker.location.lng, marker.location.lat]).addTo(this.map)
+      pin.setLngLat([location.lng, location.lat]).addTo(this.map)
       this.pins.push({marker: pin, path, height})
     })
   }
 
   private centerOnPin(index: number) {
     const state = this.state
-    const location = state == null ? null : mapMarkers(state)[index]?.location
-    if (state == null || location == null || isViewLocked(state)) { return }
+    const marker = state == null ? null : mapMarkers(state)[index]
+    const location = marker == null ? null : locateCached(marker.location)
+    if (state == null || location == null || isCenterLocked(state)) { return }
 
     this.context.edit({changes: centerOn(state, location)})
   }

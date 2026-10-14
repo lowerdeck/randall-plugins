@@ -1,4 +1,5 @@
 export * from './defineServerPlugin'
+export * from './PluginParamResolver'
 export * from './WidgetRequestError'
 export * from './WidgetSecrets'
 export * from './WidgetServerContext'

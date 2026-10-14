@@ -27,17 +27,4 @@ export namespace GeoPoint {
     lng: z.number().min(-180).max(180),
   })
 
-  /** Also takes "lat, lng" strings, which is what data usually has. */
-  export const paramSchema: z.ZodType<GeoPoint> = z.union([
-    schema,
-    z.string().transform((value, ctx) => {
-      const point = parse(value)
-      if (point == null) {
-        ctx.addIssue({code: 'custom', message: 'Invalid location, expected "lat, lng"'})
-        return z.NEVER
-      }
-      return point
-    }),
-  ])
-
 }

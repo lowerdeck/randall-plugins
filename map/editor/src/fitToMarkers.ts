@@ -1,7 +1,7 @@
-import { GeoPoint, MapMarker, MapViewport } from '@randall-plugins/map'
+import { formatLocation, GeoPoint, locateCached, MapMarker, MapViewport } from '@randall-plugins/map'
 import { WidgetAction, WidgetEditState } from '@randall/plugin-sdk-editor'
 import { mapMarkers } from './mapMarkers'
-import { centerOn, isViewLocked, roundPoint, roundZoom } from './mapView'
+import { centerOn, isViewLocked, roundZoom } from './mapView'
 
 // Fits the view around all pins. A single pin is just centered on, as fitting a point would zoom in all the way.
 export const fitToMarkers: WidgetAction = {
@@ -11,10 +11,10 @@ export const fitToMarkers: WidgetAction = {
   apply:   state => {
     const markers = pinned(state)
     if (markers.length === 0) { return {} }
-    if (markers.length === 1) { return {changes: centerOn(state, markers[0].location)} }
+    if (markers.length === 1) { return {changes: centerOn(state, markers[0].point)} }
 
-    const lats = markers.map(it => it.location.lat)
-    const lngs = markers.map(it => it.location.lng)
+    const lats = markers.map(it => it.point.lat)
+    const lngs = markers.map(it => it.point.lng)
     const bounds = {west: Math.min(...lngs), south: Math.min(...lats), east: Math.max(...lngs), north: Math.max(...lats)}
 
     // Pins stick out above their location, so the padding leaves room for the largest one.
@@ -23,16 +23,19 @@ export const fitToMarkers: WidgetAction = {
 
     return {
       changes: [
-        {path: 'center', value: roundPoint(viewport.center)},
+        {path: 'center', value: formatLocation(viewport.center)},
         {path: 'zoom', value: roundZoom(viewport.zoom)},
-        {path: 'bounds', value: null},
       ],
     }
   },
 }
 
-function pinned(state: WidgetEditState) {
-  return mapMarkers(state).filter((it): it is MapMarker & {location: GeoPoint} => it != null && GeoPoint.is(it.location))
+// The markers that have been located.
+function pinned(state: WidgetEditState): Array<MapMarker & {point: GeoPoint}> {
+  return mapMarkers(state).flatMap(marker => {
+    const point = marker == null ? null : locateCached(marker.location)
+    return marker == null || point == null ? [] : [{...marker, point}]
+  })
 }
 
 const FIT_MARGIN = 16

@@ -1,6 +1,5 @@
 import { WidgetDrawContext } from '@randall/plugin-sdk'
 import { drawAttribution } from './drawAttribution'
-import { GeoPoint } from './geo'
 import { MapProps } from './MapProps'
 import { drawMarker } from './marker'
 import { MapResources } from './prepareMap'
@@ -25,12 +24,13 @@ export function drawMap(ctx: CanvasRenderingContext2D, props: MapProps, {size, r
 
   ctx.restore()
 
-  for (const marker of props.markers) {
-    if (!GeoPoint.is(marker.location) || marker.size <= 0) { continue }
+  props.markers.forEach((marker, index) => {
+    const location = resources.markers[index]
+    if (location == null || marker.size <= 0) { return }
 
-    const [x, y] = resources.viewport.pointToPixel(marker.location, size)
+    const [x, y] = resources.viewport.pointToPixel(location, size)
     drawMarker(ctx, createPath, [x, y], marker.size, marker.color, marker.icon)
-  }
+  })
 
   if (props.attribution) {
     drawAttribution(ctx, size)
