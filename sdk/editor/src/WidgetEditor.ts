@@ -1,3 +1,4 @@
+import { WidgetAction } from './WidgetAction'
 import { WidgetContent } from './WidgetContent'
 import { WidgetParamEditor } from './WidgetParamEditor'
 import { WidgetSearch } from './WidgetSearch'
@@ -10,6 +11,7 @@ import { WidgetSearch } from './WidgetSearch'
 export interface WidgetEditor {
   search?:  WidgetSearch
   content?: WidgetContent
+  actions?: WidgetAction[]
 
   /** Extras for how params are edited, by param name. Each must fit its param's field, which is checked on loading. */
   paramEditors?: Record<string, WidgetParamEditor>

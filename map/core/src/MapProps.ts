@@ -1,5 +1,5 @@
 import { resolveParams, WidgetProps, WidgetSize } from '@randall/plugin-sdk'
-import { GeoBounds, GeoPoint, MAX_ZOOM, MapViewport } from './geo'
+import { GeoBounds, GeoPoint, MapViewport, MAX_ZOOM } from './geo'
 import { mapParams } from './params'
 
 export type MapProps = WidgetProps<typeof mapParams>
@@ -13,7 +13,7 @@ export namespace MapProps {
   // Bounds take precedence. Otherwise, the map is centered on the center, or else on the first marker.
   export function viewport(props: MapProps, size: WidgetSize): MapViewport {
     if (props.bounds != null && GeoBounds.is(props.bounds)) {
-      return MapViewport.fitBounds(props.bounds, size, props.bounds_padding)
+      return MapViewport.fitBounds(props.bounds, size)
     }
 
     const center = [props.center, ...props.markers.map(it => it.location)].find(GeoPoint.is) ?? {lat: 0, lng: 0}

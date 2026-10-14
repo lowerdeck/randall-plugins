@@ -16,3 +16,5 @@ plugins it offers in a single registry file, and tells the frontend about them. 
 source, and loads the ones it needs lazily, along with the SDKs.
 
 Tests run with the vitest of an app, e.g. from `frontend/plugins`: `../node_modules/.bin/vitest run`.
+
+Linting uses the eslint and rules of an app, e.g. from `frontend/plugins`: `../node_modules/.bin/eslint .`.

@@ -16,7 +16,8 @@
     "build": "rimraf dist && npm run build:esm && npm run build:cjs",
     "build:esm": "tsc -p tsconfig.prod.json --module es2022 --outDir dist/esm --declarationDir dist/types",
     "build:cjs": "tsc -p tsconfig.prod.json --module commonjs --outDir dist/cjs --declaration false --declarationMap false",
-    "check": "tsc -p . --noEmit"
+    "check": "tsc -p . --noEmit",
+    "lint": "eslint src"
   },
   "dependencies": {
     "@randall/plugin-sdk": "workspace:*",
