@@ -1,9 +1,10 @@
-import { WidgetRect, WidgetSize } from '@randall/plugin-sdk'
+import { WidgetRect } from '@randall/plugin-sdk'
+import { Size } from 'ytil'
 import { MapViewport } from './MapViewport'
 import { project, TILE_SIZE } from './mercator'
 
 // Lists the raster tiles needed to cover a map of the given size, with their rects relative to the map's top-left.
-export function visibleTiles(viewport: MapViewport, size: WidgetSize, maxTileZoom: number = MAX_TILE_ZOOM): PlacedTile[] {
+export function visibleTiles(viewport: MapViewport, size: Size, maxTileZoom: number = MAX_TILE_ZOOM): PlacedTile[] {
   const z = tileZoom(viewport.zoom, maxTileZoom)
   const count = 2 ** z
   const tileSize = TILE_SIZE * 2 ** (viewport.zoom - z)

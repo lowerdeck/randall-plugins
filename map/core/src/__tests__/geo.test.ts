@@ -61,11 +61,11 @@ describe("visibleTiles", () => {
 
 describe("MapProps", () => {
 
-  it("centers on the first marker by default", () => {
-    const props = MapProps.resolve({markers: [{location: '10, 20'}]})
+  it("centers on the first marker without a center", () => {
+    const props = MapProps.resolve({center: '', markers: [{location: '10, 20'}]})
     const viewport = MapProps.viewport(props, locateCached)
     expect(viewport.center).toEqual({lat: 10, lng: 20})
-    expect(viewport.zoom).toEqual(12)
+    expect(viewport.zoom).toEqual(7)
     expect(props.markers).toEqual([{location: '10, 20', color: '#E53935', size: 48, icon: null}])
   })
 

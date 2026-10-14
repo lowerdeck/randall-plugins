@@ -1,6 +1,6 @@
 import { WidgetAction } from './WidgetAction'
-import { WidgetContent } from './WidgetContent'
 import { WidgetParamEditor } from './WidgetParamEditor'
+import { WidgetPreview, WidgetPreviewContext, WidgetPreviewState } from './WidgetPreview'
 import { WidgetSearch } from './WidgetSearch'
 
 /**
@@ -9,12 +9,15 @@ import { WidgetSearch } from './WidgetSearch'
  * content is up to the widget, and defaults to a preview of how it draws.
  */
 export interface WidgetEditor {
-  search?:  WidgetSearch
-  content?: WidgetContent
+  preview: WidgetPreviewFactory<WidgetPreview>
 
-  /** Extras for how params are edited, by param name. Each must fit its param's field, which is checked on loading. */
-  paramEditors?: Record<string, WidgetParamEditor>
-
-  /** Buttons in the header of fieldsets of the form, by fieldset name. */
+  search?:          WidgetSearch
+  paramEditors?:    Record<string, WidgetParamEditor>
   fieldsetActions?: Record<string, WidgetAction[]>
 }
+
+export type WidgetPreviewFactory<P extends WidgetPreview> = (
+  container: HTMLElement,
+  context: WidgetPreviewContext,
+  state: WidgetPreviewState,
+) => P

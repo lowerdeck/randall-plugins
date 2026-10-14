@@ -1,7 +1,7 @@
-import { WidgetSize } from '@randall/plugin-sdk'
+import { Size } from 'ytil'
 
 // The credits for the tiles, small in the bottom right corner, on a light backdrop so they read on any map.
-export function drawAttribution(ctx: CanvasRenderingContext2D, size: WidgetSize) {
+export function drawAttribution(ctx: CanvasRenderingContext2D, size: Size) {
   const fontSize = Math.max(MIN_FONT_SIZE, Math.min(MAX_FONT_SIZE, size.height * 0.025))
   const padding = fontSize * 0.4
 

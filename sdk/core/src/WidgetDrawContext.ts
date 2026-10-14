@@ -1,7 +1,7 @@
-import { WidgetSize } from './WidgetSize'
+import { Size } from 'ytil'
 
 export interface WidgetDrawContext<R> {
-  size:      WidgetSize
+  size:      Size
   frame:     number
   fps:       number
   resources: R

@@ -31,12 +31,12 @@ export type WidgetProps<Ps extends WidgetParams> = {
  *
  * - `panel`: in the properties panel of the template editor (the default for params with a field).
  * - `dialog`: as a field in the widget's dialog.
- * - `content`: only through the content of the widget's dialog, like dragging a map around (the default otherwise).
+ * - `hidden`: only through the preview of the widget's dialog, like dragging a map around (the default otherwise).
  */
-export type WidgetParamEdit = 'panel' | 'dialog' | 'content'
+export type WidgetParamEdit = 'panel' | 'dialog' | 'hidden'
 
 export function paramEdit(param: WidgetParam): WidgetParamEdit {
-  return param.edit ?? (param.field == null ? 'content' : 'panel')
+  return param.edit ?? (param.field == null ? 'hidden' : 'panel')
 }
 
 export function paramVisible(param: WidgetParam, values: Record<string, unknown>): boolean {

@@ -22,6 +22,10 @@ export namespace GeoPoint {
     return {lat, lng}
   }
 
+  export function stringify(point: GeoPoint): string {
+    return `${point.lat}, ${point.lng}`
+  }
+
   export const schema = z.object({
     lat: z.number().min(-90).max(90),
     lng: z.number().min(-180).max(180),

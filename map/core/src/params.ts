@@ -5,12 +5,15 @@ import { hasLabelToggle, mapStyles } from './styles'
 export const mapForm = [
   form.fieldset('view', [
     // Like the locations of markers. Without one, the map is centered on the first marker.
-    param.text('center', {default: '', edit: 'dialog'}),
+    param.text('center', {
+      default: '',
+      edit:    'dialog',
+    }),
 
     param.number('zoom', {
       min:     0,
       max:     22,
-      default: 12,
+      default: 7,
       edit:    'dialog',
     }),
   ]),
@@ -34,7 +37,7 @@ export const mapForm = [
   form.repeaterFieldset('markers', {
     itemLabel: 'params.markers.item',
     item:      param.object('marker', {params: markerParams}),
-    default:   [MapMarker.create('52.3731, 4.8926')],
+    default:   [MapMarker.create('')],
     edit:      'dialog',
   }),
 ]

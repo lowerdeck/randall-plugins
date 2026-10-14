@@ -8,7 +8,7 @@ describe('mapSearch', () => {
   const result: GeocodeResult = {label: 'Amsterdam', center: {lat: 52.3731, lng: 4.8926}, bounds: null}
 
   function state(values: Record<string, unknown>, extra: Partial<WidgetEditState> = {}): WidgetEditState {
-    return {values, selection: null, size: {width: 640, height: 360}, isLocked: () => false, ...extra}
+    return {values, selection: null, transient: {}, size: {width: 640, height: 360}, isLocked: () => false, ...extra}
   }
 
   it('adds a marker if there are none, and selects it', () => {
@@ -28,6 +28,12 @@ describe('mapSearch', () => {
     const zoom = edit.changes?.find(it => it.path === 'zoom')?.value
     expect(zoom).toBeGreaterThan(8)
     expect(zoom).toBeLessThan(14)
+  })
+
+  it('pans to the result if the center is bound', () => {
+    const edit = mapSearch.apply(result, state({center: '52.18, 5.29', markers: [{}]}, {isLocked: path => path === 'center'}))
+    expect(edit.transient).toEqual({pan: {lat: 52.3731, lng: 4.8926}})
+    expect(edit.changes?.map(it => it.path)).not.toContain('center')
   })
 
 })

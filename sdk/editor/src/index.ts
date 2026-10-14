@@ -1,6 +1,6 @@
 export * from './defineWidgetEditor'
 export * from './WidgetAction'
-export * from './WidgetContent'
+export * from './WidgetPreview'
 export * from './WidgetEdit'
 export * from './WidgetEditor'
 export * from './WidgetEditorHost'

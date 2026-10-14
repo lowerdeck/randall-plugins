@@ -1,22 +1,58 @@
-import { formatLocation, MapProps, MapViewport, MAX_ZOOM, scaleZoom, tileStyle } from '@randall-plugins/map'
-import { WidgetContentContext, WidgetContentInstance, WidgetContentState, listIndex, widgetPath } from '@randall/plugin-sdk-editor'
+import {
+  formatLocation,
+  MapProps,
+  MapViewport,
+  MAX_ZOOM,
+  scaleZoom,
+  tileStyle,
+} from '@randall-plugins/map'
+import {
+  listIndex,
+  widgetPath,
+  WidgetChange,
+  WidgetPreview,
+  WidgetPreviewContext,
+  WidgetPreviewState,
+} from '@randall/plugin-sdk-editor'
+import {
+  AttributionControl,
+  Map as MapLibreMap,
+  MapMouseEvent,
+  NavigationControl,
+  RasterTileSource,
+} from 'maplibre-gl'
 import 'maplibre-gl/dist/maplibre-gl.css'
-import { AttributionControl, Map as MapLibreMap, MapMouseEvent, NavigationControl, RasterTileSource } from 'maplibre-gl'
 import { MapLocator } from './MapLocator'
 import { MapPins } from './MapPins'
-import { centerOn, isCenterLocked, isZoomLocked, mapView, roundPoint, roundZoom, sameView } from './mapView'
-import { RasterPaint, rasterPaint, rasterStyle, TILES_LAYER, tileURLTemplate, TILES_SOURCE } from './rasterStyle'
+import {
+  cameraView,
+  centerOn,
+  isCenterLocked,
+  isZoomLocked,
+  panTo,
+  roundPoint,
+  roundZoom,
+  sameView,
+} from './mapView'
+import {
+  RasterPaint,
+  rasterPaint,
+  rasterStyle,
+  TILES_LAYER,
+  TILES_SOURCE,
+  tileURLTemplate,
+} from './rasterStyle'
 
 // An interactive map, showing the same extent as the widget. Params are in widget zoom units, which are converted to
 // and from the zoom of the (differently sized) map on screen.
-export class MapContent implements WidgetContentInstance {
+export class MapPreview implements WidgetPreview {
 
   constructor(
     container: HTMLElement,
-    private readonly context: WidgetContentContext,
-    private state: WidgetContentState,
+    private readonly context: WidgetPreviewContext,
+    private state: WidgetPreviewState,
   ) {
-    this.view = mapView(state)
+    this.view = cameraView(state)
     this.map = new MapLibreMap({
       container:          container,
       style:              rasterStyle(this.style, context.host, this.paint),
@@ -58,16 +94,15 @@ export class MapContent implements WidgetContentInstance {
 
   // Its buttons pass on their click events, so their zooms count as user gestures, and are kept.
   private readonly navigation = new NavigationControl({showCompass: false})
-  private navigationState: {pan: boolean, zoom: boolean} | null = null
+  private navigationState: {around: boolean, zoom: boolean} | null = null
   private readonly pins: MapPins
   private readonly locator: MapLocator
 
-  /** The view last shown or reported, to tell edits coming back from ones made elsewhere. */
   private view: MapViewport
 
   private userMoving = false
 
-  public update(state: WidgetContentState) {
+  public update(state: WidgetPreviewState) {
     const prev = this.state
     this.state = state
 
@@ -90,7 +125,7 @@ export class MapContent implements WidgetContentInstance {
       }
     }
 
-    const view = mapView(state)
+    const view = cameraView(state)
     if (resized) {
       this.map.jumpTo(this.cameraFor(view))
     } else if (!sameView(view, this.view)) {
@@ -155,16 +190,14 @@ export class MapContent implements WidgetContentInstance {
     return index != null && !this.state.isLocked(widgetPath('markers', index, 'location'))
   }
 
-  // A bound center still allows zooming, around the center, and a bound zoom still allows panning.
+  // A bound center can still be panned, to look around, but zooms around the center.
   private updateNavigation() {
-    const pan = !isCenterLocked(this.state)
     const zoom = !isZoomLocked(this.state)
-    if (this.navigationState?.pan === pan && this.navigationState.zoom === zoom) { return }
-    this.navigationState = {pan, zoom}
+    const around = isCenterLocked(this.state)
+    if (this.navigationState?.around === around && this.navigationState.zoom === zoom) { return }
+    this.navigationState = {around, zoom}
 
-    const options = pan ? undefined : {around: 'center' as const}
-
-    toggle(this.map.dragPan, pan)
+    const options = around ? {around: 'center' as const} : undefined
 
     // Enabling again doesn't change the options, so they're disabled first.
     this.map.scrollZoom.disable()
@@ -206,15 +239,17 @@ export class MapContent implements WidgetContentInstance {
     if (!this.userMoving) { return }
     this.userMoving = false
 
-    const center = this.map.getCenter().wrap()
-    this.view = new MapViewport(roundPoint({lat: center.lat, lng: center.lng}), roundZoom(this.fromMapZoom(this.map.getZoom())))
+    const {lat, lng} = this.map.getCenter().wrap()
+    this.view = new MapViewport(roundPoint({lat, lng}), roundZoom(this.fromMapZoom(this.map.getZoom())))
 
-    this.context.edit({
-      changes: [
-        {path: 'center', value: formatLocation(this.view.center)},
-        {path: 'zoom', value: this.view.zoom},
-      ],
-    })
+    // Panning a bound center only looks around.
+    const centerLocked = isCenterLocked(this.state)
+    const changes: WidgetChange[] = []
+    if (!centerLocked) { changes.push({path: 'center', value: formatLocation(this.view.center)}) }
+    if (!isZoomLocked(this.state)) { changes.push({path: 'zoom', value: this.view.zoom}) }
+
+    const pan = centerLocked ? panTo(this.state, this.view.center) : {}
+    this.context.edit({...pan, changes})
   }
 
   private handleClick = (event: MapMouseEvent) => {
@@ -231,10 +266,10 @@ export class MapContent implements WidgetContentInstance {
 
   // Pins center on themselves.
   private handleDoubleClick = (event: MapMouseEvent) => {
-    if (isOnPin(event) || isCenterLocked(this.state)) { return }
+    if (isOnPin(event)) { return }
 
     const {lat, lng} = event.lngLat.wrap()
-    this.context.edit({changes: centerOn(this.state, roundPoint({lat, lng}))})
+    this.context.edit(centerOn(this.state, roundPoint({lat, lng})))
   }
 
   // #endregion
@@ -247,17 +282,9 @@ function isOnPin(event: MapMouseEvent) {
   return target instanceof Element && target.closest('.maplibregl-marker') != null
 }
 
-function styleOf(state: WidgetContentState) {
+function styleOf(state: WidgetPreviewState) {
   const {map_style, labels} = MapProps.resolve(state.values)
   return tileStyle(map_style, labels)
-}
-
-function toggle(handler: {enable(): void, disable(): void}, enabled: boolean) {
-  if (enabled) {
-    handler.enable()
-  } else {
-    handler.disable()
-  }
 }
 
 const MIN_MAP_ZOOM = -2

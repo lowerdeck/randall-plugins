@@ -6,6 +6,9 @@ export interface WidgetEdit {
 
   /** The path to select, or `null` to select nothing. The selection is left alone if not given. */
   select?: string | null
+
+  /** Merged into the transient values. */
+  transient?: Record<string, unknown>
 }
 
 /** Sets the value at a path. An index just past the end of a list adds an item. */

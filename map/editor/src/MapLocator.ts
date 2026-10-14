@@ -1,5 +1,5 @@
 import { geocoded, geocodeQuery, locateAll, MapProps } from '@randall-plugins/map'
-import { WidgetContentState, WidgetEditorHost } from '@randall/plugin-sdk-editor'
+import { WidgetEditorHost, WidgetPreviewState } from '@randall/plugin-sdk-editor'
 
 /**
  * Looks up the map's location texts that aren't "lat, lng", a moment after they last changed, so that typing an
@@ -16,7 +16,7 @@ export class MapLocator {
   private readonly failed = new Set<string>()
   private disposed = false
 
-  public update(state: WidgetContentState) {
+  public update(state: WidgetPreviewState) {
     this.cancel()
 
     const pending = MapProps.locations(MapProps.resolve(state.values)).filter(text => {

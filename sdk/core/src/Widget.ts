@@ -1,10 +1,10 @@
+import { Size } from 'ytil'
 import { WidgetAssistant } from './WidgetAssistant'
 import { WidgetDrawContext } from './WidgetDrawContext'
-import { WidgetHost } from './WidgetHost'
 import { WidgetForm } from './WidgetForm'
+import { WidgetHost } from './WidgetHost'
 import { WidgetParams } from './WidgetParam'
 import { WidgetSettings } from './WidgetSettings'
-import { WidgetSize } from './WidgetSize'
 
 /**
  * A widget: params to configure it, and code that draws it onto a canvas for a given frame. The same code runs in the
@@ -36,6 +36,6 @@ export interface Widget<P = any, R = any> {
 }
 
 export interface WidgetPrepareContext {
-  size: WidgetSize
+  size: Size
   host: WidgetHost
 }

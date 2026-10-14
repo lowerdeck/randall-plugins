@@ -1,17 +1,20 @@
 import { formatLocation, GeoPoint, locateCached, MapMarker, MapViewport } from '@randall-plugins/map'
 import { WidgetAction, WidgetEditState } from '@randall/plugin-sdk-editor'
 import { mapMarkers } from './mapMarkers'
-import { centerOn, isViewLocked, roundZoom } from './mapView'
+import { centerOn, isCenterLocked, isZoomLocked, mapView, panned, panTo, roundZoom } from './mapView'
 
 // Fits the view around all pins. A single pin is just centered on, as fitting a point would zoom in all the way.
+// A bound center can't be moved, so this pans back to it instead.
 export const fitToMarkers: WidgetAction = {
   label:   'actions.fit_to_markers',
   icon:    'arrows-to-dot',
-  enabled: state => !isViewLocked(state) && pinned(state).length > 0,
+  enabled: state => isCenterLocked(state) ? panned(state) != null : !isZoomLocked(state) && pinned(state).length > 0,
   apply:   state => {
+    if (isCenterLocked(state)) { return panTo(state, mapView(state).center) }
+
     const markers = pinned(state)
     if (markers.length === 0) { return {} }
-    if (markers.length === 1) { return {changes: centerOn(state, markers[0].point)} }
+    if (markers.length === 1) { return centerOn(state, markers[0].point) }
 
     const lats = markers.map(it => it.point.lat)
     const lngs = markers.map(it => it.point.lng)

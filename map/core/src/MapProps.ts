@@ -1,5 +1,6 @@
 import { resolveParams, WidgetProps } from '@randall/plugin-sdk'
 import { MapViewport, MAX_ZOOM } from './geo'
+import { GeoPoint } from './geo/GeoPoint'
 import { Locate } from './locations'
 import { mapParams } from './params'
 
@@ -18,8 +19,16 @@ export namespace MapProps {
 
   // Centered on the center, or else on the first marker.
   export function viewport(props: MapProps, locate: Locate): MapViewport {
-    const center = locations(props).map(locate).find(it => it != null) ?? {lat: 0, lng: 0}
+    const centerCandidate = locations(props).map(locate).find(it => it != null)
+    const center = centerCandidate ?? defaultCenter()
     return new MapViewport(center, Math.max(0, Math.min(MAX_ZOOM, props.zoom)))
+  }
+
+  export function defaultCenter(): GeoPoint {
+    return {
+      lat: 52.17, 
+      lng: 5.30,
+    }
   }
 
 }

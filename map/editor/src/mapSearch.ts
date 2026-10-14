@@ -1,9 +1,10 @@
 import { formatLocation, GeocodeResult, MapMarker, MapViewport } from '@randall-plugins/map'
 import { listIndex, WidgetChange, widgetPath, WidgetSearch } from '@randall/plugin-sdk-editor'
 import { mapMarkers } from './mapMarkers'
-import { isCenterLocked, roundZoom } from './mapView'
+import { isCenterLocked, panTo, roundZoom } from './mapView'
 
-// Moves the selected (or first) marker to the result, or adds one if there are none, and centers on the result.
+// Moves the selected (or first) marker to the result, or adds one if there are none, and centers on the result. A bound
+// center is panned to the result instead.
 export const mapSearch: WidgetSearch<GeocodeResult> = {
   placeholder: 'search.placeholder',
 
@@ -27,15 +28,14 @@ export const mapSearch: WidgetSearch<GeocodeResult> = {
 
     // Zoomed to fit the result, like a whole country. Bound values are left alone.
     const zoom = result.bounds == null ? SEARCH_RESULT_ZOOM : MapViewport.fitBounds(result.bounds, state.size).zoom
-    changes.push(
-      {path: 'center', value: center},
-      {path: 'zoom', value: roundZoom(zoom)},
-    )
+    if (!isCenterLocked(state)) {
+      changes.push({path: 'center', value: center})
+    }
+    changes.push({path: 'zoom', value: roundZoom(zoom)})
 
-    return {changes, select}
+    const pan = isCenterLocked(state) ? panTo(state, result.center) : {}
+    return {...pan, changes, select}
   },
-
-  enabled: state => !state.isLocked('markers') || !isCenterLocked(state),
 }
 
 const SEARCH_RESULT_ZOOM = 14
