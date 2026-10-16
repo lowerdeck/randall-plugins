@@ -20,6 +20,7 @@
     "lint": "eslint src"
   },
   "dependencies": {
+    "ytil": "workspace:*",
     "zod": "^4.1.5"
   },
   "devDependencies": {
