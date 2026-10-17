@@ -5,6 +5,8 @@ fieldsets:
     caption: View
   map:
     caption: Map
+  flight:
+    caption: Flight
 
 fields:
   lat: Lat
@@ -27,6 +29,10 @@ params:
     false_label: Hide labels
   map_opacity:
     caption: Opacity
+  fly_to:
+    caption: Fly to
+  fly_zoom:
+    caption: Zoom
   attribution:
     caption: Attribution
     true_label: Show attribution
@@ -43,6 +49,9 @@ params:
         caption: Color
       size:
         caption: Size
+
+animations:
+  flight: Flight
 
 map_styles:
   streets-v2: Streets

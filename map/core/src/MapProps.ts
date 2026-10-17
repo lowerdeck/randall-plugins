@@ -14,14 +14,28 @@ export namespace MapProps {
 
   /** All locations that the map shows, to locate them in one go. */
   export function locations(props: MapProps): string[] {
-    return [props.center, ...props.markers.map(it => it.location)]
+    return [props.center, props.fly_to, ...props.markers.map(it => it.location)]
   }
 
   // Centered on the center, or else on the first marker.
   export function viewport(props: MapProps, locate: Locate): MapViewport {
-    const centerCandidate = locations(props).map(locate).find(it => it != null)
+    const centerCandidate = [props.center, ...props.markers.map(it => it.location)].map(locate).find(it => it != null)
     const center = centerCandidate ?? defaultCenter()
     return new MapViewport(center, Math.max(0, Math.min(MAX_ZOOM, props.zoom)))
+  }
+
+  export function flies(props: MapProps): boolean {
+    return props.fly_to.trim() !== ''
+  }
+
+  /** Where the map flies to, if anywhere. */
+  export function flightTarget(props: MapProps, locate: Locate): MapViewport | null {
+    if (!flies(props)) { return null }
+
+    const center = locate(props.fly_to)
+    if (center == null) { return null }
+
+    return new MapViewport(center, Math.max(0, Math.min(MAX_ZOOM, props.fly_zoom)))
   }
 
   export function defaultCenter(): GeoPoint {

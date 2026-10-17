@@ -34,6 +34,16 @@ export const mapForm = [
     param.boolean('attribution', {default: true, edit: 'dialog'}),
   ]),
 
+  form.fieldset('flight', [
+    // Like the center. Without one, the map stays where it is.
+    param.text('fly_to', {
+      default: '',
+      edit:    'dialog',
+    }),
+
+    param.number('fly_zoom', {min: 0, max: 22, default: 7, edit: 'dialog', visible: flies}),
+  ]),
+
   form.repeaterFieldset('markers', {
     itemLabel: 'params.markers.item',
     item:      param.object('marker', {params: markerParams}),
@@ -43,3 +53,7 @@ export const mapForm = [
 ]
 
 export const mapParams = formParams(mapForm)
+
+function flies(values: Record<string, unknown>) {
+  return values.fly_to != null && values.fly_to !== ''
+}

@@ -10,6 +10,8 @@ Locations (\`center\`, and the \`location\` of markers) are texts: "lat, lng", o
 
 \`map_style\` is one of the MapTiler styles; \`labels\` only applies to \`satellite\`, whose tiles are otherwise without labels. \`map_opacity\` is a percentage. Keep \`attribution\` on, unless the template credits MapTiler and OpenStreetMap elsewhere.
 
+To animate the map, set \`fly_to\` to a second location: the map flies from its view to \`fly_to\` at \`fly_zoom\`, zooming out and back in on the way. It flies over the frames in the widget's \`animations\` (next to \`props\`), like \`{"flight": [from, to]}\` in frames of the scene, or else over the first 3 seconds. Add markers on both locations to show where it flies from and to.
+
 A marker is a pin of \`size\` pixels, in \`color\`, with an optional \`icon\` drawn inside it.
 `.trim(),
 }

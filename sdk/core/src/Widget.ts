@@ -1,4 +1,5 @@
 import { Size } from 'ytil'
+import { WidgetAnimation, WidgetAnimationFrames } from './WidgetAnimation'
 import { WidgetAssistant } from './WidgetAssistant'
 import { WidgetDrawContext } from './WidgetDrawContext'
 import { WidgetForm } from './WidgetForm'
@@ -31,6 +32,9 @@ export interface Widget<P = any, R = any> {
   /** Loads what drawing needs, like images. Called again whenever the props or the size change. */
   prepare?(props: P, context: WidgetPrepareContext): Promise<R>
 
+  /** The animations that the widget does by itself with these props. Without any, it's still. */
+  animations?: (props: P) => WidgetAnimation[]
+
   /** Draws the widget with its top left at the origin. Drawing is clipped to its size. */
   draw(ctx: CanvasRenderingContext2D, props: P, context: WidgetDrawContext<R>): void
 }
@@ -38,4 +42,7 @@ export interface Widget<P = any, R = any> {
 export interface WidgetPrepareContext {
   size: Size
   host: WidgetHost
+
+  /** The frames of the animations, see `widgetAnimationFrames`. */
+  animations: WidgetAnimationFrames
 }

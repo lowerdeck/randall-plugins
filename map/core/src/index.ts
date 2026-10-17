@@ -1,3 +1,4 @@
+export * from './flight'
 export * from './geo'
 export * from './locations'
 export * from './MapMarker'
