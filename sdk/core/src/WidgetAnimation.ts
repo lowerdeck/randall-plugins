@@ -2,8 +2,8 @@ import { WidgetFrameRange } from './WidgetFrameRange'
 
 /**
  * An animation that a widget does by itself, like a map flying from one place to another. The template editor shows it
- * as a track with a keyframe at either end, which set its frames in the widget's spec. The renderer requests a frame
- * for each frame of the widget's animations.
+ * as a track with a keyframe at either end, which set its frames in the template's animations. The renderer requests a
+ * frame for each frame of the widget's animations.
  */
 export interface WidgetAnimation {
   /** Identifies the animation within the widget, also in specs. */

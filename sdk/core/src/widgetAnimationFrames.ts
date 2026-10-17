@@ -3,18 +3,18 @@ import { WidgetAnimationFrames } from './WidgetAnimation'
 import { WidgetFrameRange } from './WidgetFrameRange'
 
 /**
- * The frames of the widget's animations that are going on, given the frames in its spec. Animations without frames in
- * the spec start at the start of the scene.
+ * The frames of the widget's animations that are going on, given the frames that the template sets for them, by name.
+ * Animations that the template sets no frames for start at the start of the scene.
  */
-export function widgetAnimationFrames<P>(widget: Widget<P>, props: P, specFrames: Record<string, [number, number]> | null | undefined, fps: number): WidgetAnimationFrames {
+export function widgetAnimationFrames<P>(widget: Widget<P>, props: P, templateFrames: Record<string, WidgetFrameRange>, fps: number): WidgetAnimationFrames {
   const frames: WidgetAnimationFrames = {}
   for (const animation of widget.animations?.(props) ?? []) {
-    const spec = specFrames?.[animation.name]
-    if (spec == null) {
+    const range = templateFrames[animation.name]
+    if (range == null) {
       frames[animation.name] = {from: 0, to: Math.round(animation.defaultDuration * fps)}
     } else {
-      const from = Math.max(0, Math.round(spec[0]))
-      frames[animation.name] = {from, to: Math.max(from, Math.round(spec[1]))}
+      const from = Math.max(0, Math.round(range.from))
+      frames[animation.name] = {from, to: Math.max(from, Math.round(range.to))}
     }
   }
   return frames

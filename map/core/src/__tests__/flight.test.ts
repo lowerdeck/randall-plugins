@@ -65,16 +65,16 @@ describe("flightAnimations", () => {
 
   const props = MapProps.resolve({fly_to: 'New York'})
 
-  it("takes the frames of the spec", () => {
-    expect(widgetAnimationFrames(mapWidget, props, {flight: [25, 75]}, 25)).toEqual({flight: {from: 25, to: 75}})
+  it("takes the frames of the template", () => {
+    expect(widgetAnimationFrames(mapWidget, props, {flight: {from: 25, to: 75}}, 25)).toEqual({flight: {from: 25, to: 75}})
   })
 
   it("spans the first seconds without frames", () => {
-    expect(widgetAnimationFrames(mapWidget, props, undefined, 25)).toEqual({flight: {from: 0, to: 75}})
+    expect(widgetAnimationFrames(mapWidget, props, {}, 25)).toEqual({flight: {from: 0, to: 75}})
   })
 
   it("has none without a destination", () => {
-    expect(widgetAnimationFrames(mapWidget, MapProps.resolve({}), {flight: [25, 75]}, 25)).toEqual({})
+    expect(widgetAnimationFrames(mapWidget, MapProps.resolve({}), {flight: {from: 25, to: 75}}, 25)).toEqual({})
   })
 
 })
