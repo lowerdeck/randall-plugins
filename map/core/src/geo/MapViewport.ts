@@ -1,4 +1,4 @@
-import { Size } from 'ytil'
+import { Size } from '@mosdev/ytil'
 import { GeoBounds } from './GeoBounds'
 import { GeoPoint } from './GeoPoint'
 import { project, unproject, worldSize } from './mercator'

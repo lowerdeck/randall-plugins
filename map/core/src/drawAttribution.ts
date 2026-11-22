@@ -1,4 +1,4 @@
-import { Size } from 'ytil'
+import { Size } from '@mosdev/ytil'
 
 // The credits for the tiles, small in the bottom right corner, on a light backdrop so they read on any map.
 export function drawAttribution(ctx: CanvasRenderingContext2D, size: Size) {

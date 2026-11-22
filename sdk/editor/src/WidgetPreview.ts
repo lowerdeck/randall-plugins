@@ -1,4 +1,4 @@
-import { Size } from 'ytil'
+import { Size } from '@mosdev/ytil'
 import { WidgetEdit } from './WidgetEdit'
 import { WidgetEditState } from './WidgetEditState'
 import { WidgetEditorHost } from './WidgetEditorHost'

@@ -1,4 +1,4 @@
-import { Size } from 'ytil'
+import { Size } from '@mosdev/ytil'
 import { WidgetAnimationFrames } from './WidgetAnimation'
 
 export interface WidgetDrawContext<R> {

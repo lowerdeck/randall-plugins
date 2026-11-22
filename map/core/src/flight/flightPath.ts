@@ -1,4 +1,4 @@
-import { Size } from 'ytil'
+import { Size } from '@mosdev/ytil'
 import { MapViewport, MAX_ZOOM, project, unproject, worldSize } from '../geo'
 
 /**

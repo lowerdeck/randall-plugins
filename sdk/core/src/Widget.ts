@@ -1,4 +1,4 @@
-import { Size } from 'ytil'
+import { Size } from '@mosdev/ytil'
 import { WidgetAnimation, WidgetAnimationFrames } from './WidgetAnimation'
 import { WidgetAssistant } from './WidgetAssistant'
 import { WidgetDrawContext } from './WidgetDrawContext'

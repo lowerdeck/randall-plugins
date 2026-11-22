@@ -1,4 +1,4 @@
-import { Size } from 'ytil'
+import { Size } from '@mosdev/ytil'
 
 export interface WidgetEditState {
   /** The evaluated props, with the edits so far. Values bound to data hold their current value, and can't be edited. */
