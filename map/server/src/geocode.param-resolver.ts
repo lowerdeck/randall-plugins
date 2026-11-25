@@ -1,5 +1,5 @@
-import { formatLocation, GeoPoint, geocodeQuery } from '@randall-plugins/map'
-import { defineParamResolver, WidgetServerContext } from '@randall/plugin-sdk-server'
+import { formatLocation, GeoPoint, geocodeQuery } from '@lowerdeck/randall-plugin-map'
+import { defineParamResolver, WidgetServerContext } from '@lowerdeck/randall-plugin-sdk-server'
 import { z } from 'zod'
 import { cachedGeocode, cachedReverseGeocode } from './cachedGeocode'
 import { MapSettings } from './settings'

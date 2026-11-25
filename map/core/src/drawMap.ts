@@ -1,4 +1,4 @@
-import { WidgetDrawContext } from '@randall/plugin-sdk'
+import { WidgetDrawContext } from '@lowerdeck/randall-plugin-sdk'
 import { MapProps } from './MapProps'
 import { drawAttribution } from './drawAttribution'
 import { flightAnimation, flightProgress } from './flight'

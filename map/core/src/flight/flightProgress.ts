@@ -1,4 +1,4 @@
-import { WidgetFrameRange } from '@randall/plugin-sdk'
+import { WidgetFrameRange } from '@lowerdeck/randall-plugin-sdk'
 
 /** How far along the flight the map is at a frame, eased in and out. */
 export function flightProgress(frame: number, frames: WidgetFrameRange): number {

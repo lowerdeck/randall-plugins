@@ -1,4 +1,4 @@
-import { WidgetSettings } from '@randall/plugin-sdk'
+import { WidgetSettings } from '@lowerdeck/randall-plugin-sdk'
 
 // Maps are optional: without a provider, the map widget is not available.
 export const mapSettings: WidgetSettings<{provider: string}> = {

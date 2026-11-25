@@ -1,5 +1,5 @@
-import { geocoded, geocodeQuery, locateAll, MapProps } from '@randall-plugins/map'
-import { WidgetEditorHost, WidgetPreviewState } from '@randall/plugin-sdk-editor'
+import { geocoded, geocodeQuery, locateAll, MapProps } from '@lowerdeck/randall-plugin-map'
+import { WidgetEditorHost, WidgetPreviewState } from '@lowerdeck/randall-plugin-sdk-editor'
 
 /**
  * Looks up the map's location texts that aren't "lat, lng", a moment after they last changed, so that typing an

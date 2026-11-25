@@ -1,5 +1,5 @@
-import { formatLocation, GeoPoint, locateCached, MapMarker } from '@randall-plugins/map'
-import { listIndex, WidgetEditState, WidgetListEditor } from '@randall/plugin-sdk-editor'
+import { formatLocation, GeoPoint, locateCached, MapMarker } from '@lowerdeck/randall-plugin-map'
+import { listIndex, WidgetEditState, WidgetListEditor } from '@lowerdeck/randall-plugin-sdk-editor'
 import { mapMarkers } from './mapMarkers'
 import { centerOn, mapView } from './mapView'
 

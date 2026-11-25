@@ -1,5 +1,5 @@
 import { z } from 'zod'
-import { GeoBounds, GeoPoint } from '@randall-plugins/map'
+import { GeoBounds, GeoPoint } from '@lowerdeck/randall-plugin-map'
 
 export interface GeocodingResult {
   label:  string

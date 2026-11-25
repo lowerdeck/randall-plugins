@@ -1,5 +1,5 @@
-import { formatLocation, GeocodeResult, MapMarker, MapViewport } from '@randall-plugins/map'
-import { listIndex, WidgetChange, widgetPath, WidgetSearch } from '@randall/plugin-sdk-editor'
+import { formatLocation, GeocodeResult, MapMarker, MapViewport } from '@lowerdeck/randall-plugin-map'
+import { listIndex, WidgetChange, widgetPath, WidgetSearch } from '@lowerdeck/randall-plugin-sdk-editor'
 import { mapMarkers } from './mapMarkers'
 import { isCenterLocked, panTo, roundZoom } from './mapView'
 

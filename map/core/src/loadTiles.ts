@@ -1,4 +1,4 @@
-import { WidgetHost } from '@randall/plugin-sdk'
+import { WidgetHost } from '@lowerdeck/randall-plugin-sdk'
 import { TileCoord } from './geo'
 import { tileKey } from './tileKey'
 import { tilePath } from './tilePath'

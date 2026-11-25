@@ -1,4 +1,4 @@
-import { widgetAnimationFrames } from '@randall/plugin-sdk'
+import { widgetAnimationFrames } from '@lowerdeck/randall-plugin-sdk'
 import { describe, expect, it } from 'vitest'
 import { flightPath, flightProgress } from '../flight'
 import { MapViewport } from '../geo'

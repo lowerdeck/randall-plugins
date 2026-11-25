@@ -1,5 +1,5 @@
-import { GeoPoint } from '@randall-plugins/map'
-import { WidgetServerContext } from '@randall/plugin-sdk-server'
+import { GeoPoint } from '@lowerdeck/randall-plugin-map'
+import { WidgetServerContext } from '@lowerdeck/randall-plugin-sdk-server'
 import { GeocodingResult } from './geocodingResult'
 import { geocode, reverseGeocode } from './maptiler'
 import { requireAPIKey } from './requireAPIKey'

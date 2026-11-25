@@ -1,4 +1,4 @@
-import { resolveParams, WidgetProps } from '@randall/plugin-sdk'
+import { resolveParams, WidgetProps } from '@lowerdeck/randall-plugin-sdk'
 import { MapViewport, MAX_ZOOM } from './geo'
 import { GeoPoint } from './geo/GeoPoint'
 import { Locate } from './locations'

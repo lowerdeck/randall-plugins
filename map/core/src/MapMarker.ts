@@ -1,4 +1,4 @@
-import { ChoiceFieldVariant, namedParams, param, resolveParams, WidgetProps } from '@randall/plugin-sdk'
+import { ChoiceFieldVariant, namedParams, param, resolveParams, WidgetProps } from '@lowerdeck/randall-plugin-sdk'
 import { shapeIcon } from './marker/shapeIcon'
 import { shapeNames } from './marker/shapes'
 

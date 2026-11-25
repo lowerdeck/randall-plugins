@@ -1,4 +1,4 @@
-import { Widget } from '@randall/plugin-sdk'
+import { Widget } from '@lowerdeck/randall-plugin-sdk'
 import { PluginParamResolver } from './PluginParamResolver'
 import { WidgetServerContext } from './WidgetServerContext'
 import { WidgetSettingsHandler } from './WidgetSettingsHandler'

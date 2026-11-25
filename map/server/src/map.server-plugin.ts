@@ -1,5 +1,5 @@
-import { mapWidget, parseTilePath } from '@randall-plugins/map'
-import { defineServerPlugin, WidgetRequestError } from '@randall/plugin-sdk-server'
+import { mapWidget, parseTilePath } from '@lowerdeck/randall-plugin-map'
+import { defineServerPlugin, WidgetRequestError } from '@lowerdeck/randall-plugin-sdk-server'
 import { TileCache } from './TileCache'
 import { cachedGeocode } from './cachedGeocode'
 import { geocodeParamResolver } from './geocode.param-resolver'

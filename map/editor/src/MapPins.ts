@@ -1,5 +1,5 @@
-import { formatLocation, locateCached, MapProps, markerViewBox } from '@randall-plugins/map'
-import { widgetPath, WidgetPreviewContext, WidgetPreviewState } from '@randall/plugin-sdk-editor'
+import { formatLocation, locateCached, MapProps, markerViewBox } from '@lowerdeck/randall-plugin-map'
+import { widgetPath, WidgetPreviewContext, WidgetPreviewState } from '@lowerdeck/randall-plugin-sdk-editor'
 import { isEqual } from 'lodash'
 import { Map as MapLibreMap, Marker } from 'maplibre-gl'
 import { centeredGrid } from './centeredGrid'

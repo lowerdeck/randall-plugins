@@ -1,5 +1,5 @@
 {
-  "name": "@randall/plugin-sdk-editor",
+  "name": "@lowerdeck/randall-plugin-sdk-editor",
   "version": "0.1.0",
   "private": true,
   "license": "UNLICENSED",
@@ -20,7 +20,7 @@
     "lint": "eslint src"
   },
   "dependencies": {
-    "@randall/plugin-sdk": "workspace:*"
+    "@lowerdeck/randall-plugin-sdk": "workspace:*"
   },
   "devDependencies": {
     "rimraf": "^6.0.1",

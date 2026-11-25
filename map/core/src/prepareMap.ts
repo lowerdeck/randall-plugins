@@ -1,4 +1,4 @@
-import { WidgetPrepareContext } from '@randall/plugin-sdk'
+import { WidgetPrepareContext } from '@lowerdeck/randall-plugin-sdk'
 import { flightAnimation, FlightPath, flightPath, flightTiles } from './flight'
 import { GeoPoint, MapViewport, visibleTiles } from './geo'
 import { loadTiles } from './loadTiles'

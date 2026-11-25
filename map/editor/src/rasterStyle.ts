@@ -1,6 +1,6 @@
 import { StyleSpecification } from 'maplibre-gl'
-import { MAX_TILE_ZOOM, TILE_SIZE, tilePath } from '@randall-plugins/map'
-import { WidgetEditorHost } from '@randall/plugin-sdk-editor'
+import { MAX_TILE_ZOOM, TILE_SIZE, tilePath } from '@lowerdeck/randall-plugin-map'
+import { WidgetEditorHost } from '@lowerdeck/randall-plugin-sdk-editor'
 
 export function rasterStyle(style: string, host: WidgetEditorHost, paint: RasterPaint): StyleSpecification {
   return {

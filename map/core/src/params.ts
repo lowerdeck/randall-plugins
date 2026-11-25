@@ -1,4 +1,4 @@
-import { form, formParams, param } from '@randall/plugin-sdk'
+import { form, formParams, param } from '@lowerdeck/randall-plugin-sdk'
 import { MapMarker, markerParams } from './MapMarker'
 import { hasLabelToggle, mapStyles } from './styles'
 

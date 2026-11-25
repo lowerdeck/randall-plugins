@@ -1,4 +1,4 @@
-import { WidgetSecrets, WidgetSettingsError, WidgetSettingsHandler } from '@randall/plugin-sdk-server'
+import { WidgetSecrets, WidgetSettingsError, WidgetSettingsHandler } from '@lowerdeck/randall-plugin-sdk-server'
 import { z } from 'zod'
 import { testAPIKey } from './maptiler'
 

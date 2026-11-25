@@ -1,4 +1,4 @@
-import { WidgetHost } from '@randall/plugin-sdk'
+import { WidgetHost } from '@lowerdeck/randall-plugin-sdk'
 import { GeoPoint } from '../geo'
 import { geocodeOnce } from './geocodeCache'
 import { geocodeQuery } from './geocodeQuery'

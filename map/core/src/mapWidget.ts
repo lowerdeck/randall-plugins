@@ -1,4 +1,4 @@
-import { defineWidget } from '@randall/plugin-sdk'
+import { defineWidget } from '@lowerdeck/randall-plugin-sdk'
 import { mapAssistant } from './assistant'
 import { drawMap } from './drawMap'
 import { flightAnimations } from './flight'

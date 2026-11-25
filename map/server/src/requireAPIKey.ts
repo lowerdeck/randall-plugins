@@ -1,4 +1,4 @@
-import { WidgetRequestError, WidgetServerContext } from '@randall/plugin-sdk-server'
+import { WidgetRequestError, WidgetServerContext } from '@lowerdeck/randall-plugin-sdk-server'
 import { MapSettings, maptilerAPIKey } from './settings'
 
 export function requireAPIKey(context: WidgetServerContext<MapSettings>): string {

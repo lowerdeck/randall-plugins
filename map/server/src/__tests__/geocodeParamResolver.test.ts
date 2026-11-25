@@ -1,4 +1,4 @@
-import { WidgetServerContext } from '@randall/plugin-sdk-server'
+import { WidgetServerContext } from '@lowerdeck/randall-plugin-sdk-server'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { geocodeParamResolver } from '../geocode.param-resolver'
 import { MapSettings } from '../settings'

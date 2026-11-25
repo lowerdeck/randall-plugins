@@ -1,4 +1,4 @@
-import { WidgetFrameRange } from '@randall/plugin-sdk'
+import { WidgetFrameRange } from '@lowerdeck/randall-plugin-sdk'
 import { Size } from '@mosdev/ytil'
 import { TileCoord, visibleTiles } from '../geo'
 import { tileKey } from '../tileKey'

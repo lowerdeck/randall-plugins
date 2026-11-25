@@ -1,4 +1,4 @@
-import { WidgetAnimation } from '@randall/plugin-sdk'
+import { WidgetAnimation } from '@lowerdeck/randall-plugin-sdk'
 import { MapProps } from '../MapProps'
 
 export function flightAnimations(props: MapProps): WidgetAnimation[] {

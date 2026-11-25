@@ -5,7 +5,7 @@ import {
   MAX_ZOOM,
   scaleZoom,
   tileStyle,
-} from '@randall-plugins/map'
+} from '@lowerdeck/randall-plugin-map'
 import {
   listIndex,
   widgetPath,
@@ -13,7 +13,7 @@ import {
   WidgetPreview,
   WidgetPreviewContext,
   WidgetPreviewState,
-} from '@randall/plugin-sdk-editor'
+} from '@lowerdeck/randall-plugin-sdk-editor'
 import {
   AttributionControl,
   Map as MapLibreMap,

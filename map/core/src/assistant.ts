@@ -1,4 +1,4 @@
-import { WidgetAssistant } from '@randall/plugin-sdk'
+import { WidgetAssistant } from '@lowerdeck/randall-plugin-sdk'
 
 export const mapAssistant: WidgetAssistant = {
   description: `

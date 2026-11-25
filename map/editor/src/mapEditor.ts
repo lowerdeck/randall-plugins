@@ -1,4 +1,4 @@
-import { defineWidgetEditor } from '@randall/plugin-sdk-editor'
+import { defineWidgetEditor } from '@lowerdeck/randall-plugin-sdk-editor'
 import { MapPreview } from './MapPreview'
 import { fitToMarkers } from './fitToMarkers'
 import { mapSearch } from './mapSearch'

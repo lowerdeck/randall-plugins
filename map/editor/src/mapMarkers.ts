@@ -1,5 +1,5 @@
-import { MapMarker } from '@randall-plugins/map'
-import { WidgetEditState } from '@randall/plugin-sdk-editor'
+import { MapMarker } from '@lowerdeck/randall-plugin-map'
+import { WidgetEditState } from '@lowerdeck/randall-plugin-sdk-editor'
 
 /** The markers by their index in the props, which empty entries keep. */
 export function mapMarkers(state: WidgetEditState): Array<MapMarker | null> {

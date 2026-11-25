@@ -1,4 +1,4 @@
-import { WidgetRect } from '@randall/plugin-sdk'
+import { WidgetRect } from '@lowerdeck/randall-plugin-sdk'
 import { Size } from '@mosdev/ytil'
 import { MapViewport } from './MapViewport'
 import { project, TILE_SIZE } from './mercator'

@@ -1,5 +1,5 @@
 {
-  "name": "@randall-plugins/map-editor",
+  "name": "@lowerdeck/randall-plugin-map-editor",
   "version": "0.1.0",
   "private": true,
   "license": "UNLICENSED",
@@ -20,9 +20,9 @@
     "lint": "eslint src"
   },
   "dependencies": {
-    "@randall-plugins/map": "workspace:*",
-    "@randall/plugin-sdk": "workspace:*",
-    "@randall/plugin-sdk-editor": "workspace:*",
+    "@lowerdeck/randall-plugin-map": "workspace:*",
+    "@lowerdeck/randall-plugin-sdk": "workspace:*",
+    "@lowerdeck/randall-plugin-sdk-editor": "workspace:*",
     "maplibre-gl": "~5.6.0",
     "lodash": "^4.17.21"
   },

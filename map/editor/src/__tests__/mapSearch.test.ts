@@ -1,5 +1,5 @@
-import { GeocodeResult } from '@randall-plugins/map'
-import { WidgetEditState } from '@randall/plugin-sdk-editor'
+import { GeocodeResult } from '@lowerdeck/randall-plugin-map'
+import { WidgetEditState } from '@lowerdeck/randall-plugin-sdk-editor'
 import { describe, expect, it } from 'vitest'
 import { mapSearch } from '../mapSearch'
 

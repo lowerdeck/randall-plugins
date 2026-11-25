@@ -1,5 +1,5 @@
-import { formatLocation, GeoPoint, locateCached, MapProps, MapViewport, MAX_ZOOM } from '@randall-plugins/map'
-import { WidgetEdit, WidgetEditState } from '@randall/plugin-sdk-editor'
+import { formatLocation, GeoPoint, locateCached, MapProps, MapViewport, MAX_ZOOM } from '@lowerdeck/randall-plugin-map'
+import { WidgetEdit, WidgetEditState } from '@lowerdeck/randall-plugin-sdk-editor'
 
 /** The view as it will be rendered, in widget zoom units, with the locations that have been looked up so far. */
 export function mapView(state: WidgetEditState): MapViewport {
