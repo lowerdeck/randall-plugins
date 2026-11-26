@@ -1,6 +1,6 @@
 # Randall plugins
 
-Plugins for Randall templates, like maps. A plugin provides a widget: a set of params plus code that draws it onto a
+Plugins for Randall templates. A plugin provides a widget: a set of params plus code that draws it onto a
 canvas for a given frame. They're built on the plugin SDKs in `sdk/`, and never on the Randall apps themselves:
 
 - `sdk/core`: the widget contract, used everywhere (`defineWidget`).
@@ -8,7 +8,7 @@ canvas for a given frame. They're built on the plugin SDKs in `sdk/`, and never 
   framework: the dialog lays out the fields, and the content is plain DOM.
 - `sdk/server`: what plugins can do in the backend (settings, resources, queries).
 
-Each plugin has the same three parts, e.g. `map/core`, `map/editor` and `map/server`. The core default-exports its
+Each plugin has the same three parts, e.g. `<name>/core`, `<name>/editor` and `<name>/server`. The core default-exports its
 widget, and the editor (if any) its `WidgetEditor`.
 
 The apps have this repo as a submodule at `plugins`, with `plugins/*/*` in their workspaces. The backend lists the

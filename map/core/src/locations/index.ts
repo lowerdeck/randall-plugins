@@ -1,6 +1,0 @@
-export * from './formatLocation'
-export * from './GeocodeResult'
-export * from './geocodeQuery'
-export * from './locateAll'
-export * from './locateCached'
-export { geocoded } from './geocodeCache'
